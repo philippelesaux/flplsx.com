@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getAlbumImages } from "../utils/albums";
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 
-const images = await getAlbumImages("portfolio");
+const portfolio = await getCollection("portfolio");
 ---
 <BaseLayout title="Photography">
 <div class="text-center mt-8 mb-16">
@@ -16,10 +16,10 @@ const images = await getAlbumImages("portfolio");
 
     <div class="mx-auto container my-8 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5">
         {
-            images.map((image) => (
+            portfolio.map((entry) => (
                 <Image
-                    src={image}
-                    alt="Image from portfolio album"
+                    src={entry.data.image}
+                    alt={entry.data.alt}
                     format="avif"
                     quality={50}
                     class="rounded mb-4 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
