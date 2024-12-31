@@ -1,0 +1,23 @@
+[
+    {
+        "id": "charleston-house",
+        "title": "Historic House in Downtown",
+        "location": "Charleston, NC",
+        "image": "./portfolio/charleston-house.jpg",
+        "alt": "A historic house in downtown Charleston"
+    },
+    {
+        "id": "calle-ocho",
+        "title": "A View of Calle Ocho",
+        "location": "Miami, FL",
+        "image": "./portfolio/calle-ocho.jpg",
+        "alt": "A palm tree and the side of a building"
+    },
+    {
+        "id": "miami-sunset",
+        "title": "Sunset from Wynwood",
+        "location": "Miami, FL",
+        "image": "./portfolio/miami-sunset.jpg",
+        "alt": "The sun setting from the top of a building"
+    }
+]
