@@ -19,5 +19,19 @@
         "location": "Miami, FL",
         "image": "./portfolio/miami-sunset.jpg",
         "alt": "The sun setting from the top of a building"
+    },
+    {
+        "id": "ancient-steps",
+        "title": "Old Steps at the Vizcaya Gardens",
+        "location": "Miami, FL",
+        "image": "./portfolio/ancient-steps.jpg",
+        "alt": "A set of weathered, outdoor steps"
+    },
+    {
+        "id": "ambra-cook",
+        "title": "Finishing the Dish at Ambra",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/ambra-cook.jpg",
+        "alt": "A cook puts the finishing touches on a green pasta dish"
     }
 ]
