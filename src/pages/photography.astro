@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import Modal from "../components/Modal.astro";
 
 const portfolio = await getCollection("portfolio");
 ---
@@ -17,16 +18,59 @@ const portfolio = await getCollection("portfolio");
     <div class="mx-auto container my-8 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5">
         {
             portfolio.map((entry) => (
-                <Image
-                    src={entry.data.image}
-                    alt={entry.data.alt}
-                    format="avif"
-                    quality={50}
-                    class="rounded mb-4 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
-                    loading="lazy"
-                />
+                <button
+                        data-image-id={entry.data.id}
+                        class="image-button"
+                        onclick={`document.querySelector("#${entry.data.id}").showModal()`}
+                >
+                    <Image
+                        src={entry.data.image}
+                        alt={entry.data.alt}
+                        quality="low"
+                        class="rounded mb-4 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
+                        loading="lazy"
+                    />
+                </button>
+
+                <Modal id={entry.data.id}>
+                    <main slot="main">
+                        <Image
+                            src={entry.data.image}
+                            alt={entry.data.alt}
+                            quality="max"
+                            loading="lazy"
+
+                        />
+                        <h2>{entry.data.title}</h2>
+                        <p>{entry.data.location}</p>
+                    </main>
+                    <button slot="close">Close Modal</button>
+                </Modal>
             ))
         }
     </div>
+
+    <!--<dialog id="lightbox">-->
+    <!--    <p>Hello</p>-->
+    <!--</dialog>-->
 </div>
 </BaseLayout>
+
+<script>
+    // const dialog = document.querySelector("#lightbox");
+    // const buttons = document.querySelectorAll(".image-button");
+    //
+    // buttons.forEach((button) => {
+    //     button.addEventListener("click", () => {
+    //         const actualDialog = dialog as HTMLDialogElement;
+    //         const actualButton = button as HTMLButtonElement;
+    //
+    //         if (actualDialog !== null) {
+    //             actualDialog.showModal();
+    //             actualDialog.dataset.imageId = actualButton.dataset.imageId;
+    //         }
+    //
+    //     })
+    // })
+
+</script>
