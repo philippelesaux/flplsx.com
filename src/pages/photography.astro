@@ -15,19 +15,18 @@ const portfolio = await getCollection("portfolio");
         A selection of travel and food photos
     </p>
 
-    <div class="mx-auto container my-8 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5">
+    <div class="p-2 mx-auto container gap-2 my-8 columns-2 md:columns-3 lg:columns-4 xl:columns-5">
         {
             portfolio.map((entry) => (
                 <button
                         data-image-id={entry.data.id}
-                        class="image-button"
                         onclick={`document.querySelector("#${entry.data.id}").showModal()`}
                 >
                     <Image
                         src={entry.data.image}
                         alt={entry.data.alt}
                         quality="low"
-                        class="rounded mb-4 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
+                        class="rounded mb-1 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
                         loading="lazy"
                     />
                 </button>
@@ -37,7 +36,7 @@ const portfolio = await getCollection("portfolio");
                         <Image
                             src={entry.data.image}
                             alt={entry.data.alt}
-                            quality="max"
+                            quality="high"
                             loading="lazy"
 
                         />
