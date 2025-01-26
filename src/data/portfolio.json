@@ -1,5 +1,12 @@
 [
     {
+        "id": "sea-philly",
+        "title": "Drinks Aboard SEA Philly",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/sea-philly.jpg",
+        "alt": "Drinks are prepared aboard a small ship"
+    },
+    {
         "id": "charleston-house",
         "title": "Historic House in Downtown",
         "location": "Charleston, NC",
@@ -33,5 +40,145 @@
         "location": "Philadelphia, PA",
         "image": "./portfolio/ambra-cook.jpg",
         "alt": "A cook puts the finishing touches on a green pasta dish"
+    },
+    {
+        "id": "southwark-burger",
+        "title": "The Southwark Burger",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/southwark-burger.jpg",
+        "alt": "A hamburger in the kitchen, ready for serving"
+    },
+    {
+        "id": "chef-chris-donut",
+        "title": "Peach Doughnut",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/chef-chris-donut.jpg",
+        "alt": "Chef Chris D'Ambro decorates a peach doughnut"
+    },
+    {
+        "id": "french-quarter",
+        "title": "French Quarter",
+        "location": "New Orleans, LA",
+        "image": "./portfolio/french-quarter.jpg",
+        "alt": "Elaborate building in New Orleans' French Quarter"
+    },
+    {
+        "id": "cane-and-table",
+        "title": "Drinks at Cane and Table",
+        "location": "New Orleans, LA",
+        "image": "./portfolio/cane-and-table.jpg",
+        "alt": "Top view of cocktails and the menu at Cane and Table"
+    },
+    {
+        "id": "alma-shrimp",
+        "title": "A shrimp salad at Alma in the Bywater",
+        "location": "New Orleans, LA",
+        "image": "./portfolio/alma-shrimp.jpg",
+        "alt": "A salad with shrimp, ricotta, and poached eggs"
+    },
+    {
+        "id": "louis-armstrong-park",
+        "title": "Louis Armstrong Park",
+        "location": "New Orleans, LA",
+        "image": "./portfolio/louis-armstrong-park.jpg",
+        "alt": "The entrance to Louis Armstrong Park at night"
+    },
+    {
+        "id": "chef-christopher-kearse-forsythia",
+        "title": "Chef Christopher Kearse of Forsythia",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/chef-christopher-kearse-forsythia.jpg",
+        "alt": "Chef Christopher Kearse gives a speech"
+    },
+    {
+        "id": "matines-latte",
+        "title": "Latte at Matines Café",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/matines-latte.jpg",
+        "alt": "A latte in an outdoor patio"
+    },
+    {
+        "id": "chestnut-hill-market-sign",
+        "title": "Entrance Sign at the Chestnut Hill Market",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/chestnut-hill-market-sign.jpg",
+        "alt": "A sign of vendors at the Chestnut Hill Market"
+    },
+    {
+        "id": "cider-belly",
+        "title": "Glass of Cider at Cider Belly",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/cider-belly.jpg",
+        "alt": "A glass of hard cider"
+    },
+    {
+        "id": "pouring-cider",
+        "title": "Pouring Cider Directly from the Source at Cider Belly",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/pouring-cider.jpg",
+        "alt": "A glass of cider is poured from the barrel"
+    },
+    {
+        "id": "hosers",
+        "title": "Chef Max Hosey Finesses some Vegan Sushi",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/hosers.jpg",
+        "alt": "Chef Max Hosey puts the finishing touches on some vegan sushi"
+    },
+    {
+        "id": "heirloom",
+        "title": "Heirloom at the St. Laurent",
+        "location": "Asbury Park, NJ",
+        "image": "./portfolio/heirloom.jpg",
+        "alt": "Kitchen staff finish up some dishes"
+    },
+    {
+        "id": "asbury-convention-center",
+        "title": "Asbury Park Convention Hall",
+        "location": "Asbury Park, NJ",
+        "image": "./portfolio/asbury-convention-center.jpg",
+        "alt": "A view of the Asbury Park Convention Hall from the adjoining park"
+    },
+    {
+        "id": "asbury-distilling",
+        "title": "Cocktails at Asbury Park Distilling",
+        "location": "Asbury Park, NJ",
+        "image": "./portfolio/asbury-distilling.jpg",
+        "alt": "Two cocktails in the late afternoon sun"
+    },
+    {
+        "id": "sweet-amalia",
+        "title": "Sweet Amalia Market and Kitchen",
+        "location": "Newfield, NJ",
+        "image": "./portfolio/sweet-amalia.jpg",
+        "alt": "Exterior shot of Sweet Amalia Market and Kitchen"
+    },
+    {
+        "id": "olorosso",
+        "title": "Olorosso",
+        "location": "Philadelphia, PA",
+        "image": "./portfolio/olorosso.jpg",
+        "alt": "The menu at Olorosso"
+    },
+    {
+        "id": "loisa-spices",
+        "title": "Louisa Spice Blends at Grand Cata",
+        "location": "Washington, DC",
+        "image": "./portfolio/loisa-spices.jpg",
+        "alt": "Close-up shot of spice jars"
+    },
+    {
+        "id": "causa-amazonia",
+        "title": "Causa/Amazonia",
+        "location": "Washington, DC",
+        "image": "./portfolio/causa-amazonia.jpg",
+        "alt": "A painting through some greenery"
+    },
+    {
+        "id": "causa-amazonia-plantains",
+        "title": "Maduritos at Causa/Amazonia",
+        "location": "Washington, DC",
+        "image": "./portfolio/causa-amazonia-plantains.jpg",
+        "alt": "A dish of plantains"
     }
 ]
