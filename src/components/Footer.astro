@@ -1,5 +1,7 @@
 ---
 const date  = new Date();
 const year = date.getFullYear();
+
+const { class: className } = Astro.props;
 ---
-<footer class="text-center text-sm tracking-wide text-slate-500 my-4">&copy; {year} Philippe LeSaux</footer>
+<footer class={`${className} text-center text-sm tracking-wide text-slate-500 my-4`}>&copy; {year}</footer>

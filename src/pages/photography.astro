@@ -3,14 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import Modal from "../components/Modal.astro";
+import Lightbox from "../components/Lightbox";
 
 const portfolio = await getCollection("portfolio");
 ---
 <BaseLayout title="Photography">
 <div class="text-center mt-8 mb-16">
-    <h1 class="text-3xl xl:text-6xl font-bold text-slate-600">
-        Portfolio
-    </h1>
+    <!--<h1 class="text-3xl xl:text-6xl font-bold text-slate-600">-->
+    <!--    Portfolio-->
+    <!--</h1>-->
+    <Lightbox />
     <p class="xl:text-2xl my-4 text-slate-700">
         A selection of travel and food photos
     </p>
