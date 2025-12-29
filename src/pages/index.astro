@@ -1,19 +1,18 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { Image } from "astro:assets";
-import headshot from "../data/headshot.jpg";
----
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from "astro:content";
+import Lightbox from "../components/Lightbox";
 
-<BaseLayout title="Home">
-	<div class="mx-8">
-		<div class="my-8">
-			<h1 class="my-4 text-center text-4xl  text-teal-700 font-bold">Philippe LeSaux</h1>
-			<h2 class="px-4 text-center font-bold uppercase tracking-wider text-slate-500">Software Engineer, <a href="/photography">Photographer</a>, Musician</h2>
-		</div>
-		<figure class="w-3/4 my-8 mx-auto">
-			<Image src={headshot} alt="Headshot of Philippe on some steps" class="border-transparent rounded-lg"/>
-			<figcaption class="text-right text-sm text-slate-600">Photo by <a href="https://www.claywilliamsphoto.com/index/G0000VBxwBwDzmbE/thumbs" class="underline">Clay Williams</a></figcaption>
-		</figure>
-		<p class="text-slate-600">Philippe is a digital artist, jumping mediums from music to code to photography. Specializing in food and travel photography, his work has been featured in Time Out and Philly Mag. He takes too many pictures of his dog, Lenny.</p>
-	</div>
+const portfolio = await getCollection("portfolio");
+const allImages = portfolio.map((entry) => entry.data);
+
+export type AllImages = typeof allImages;
+---
+<BaseLayout title="Photography">
+    <div class="text-center mt-8 mb-16">
+        <Lightbox
+            client:load
+            allImages={allImages}
+        />
+    </div>
 </BaseLayout>
