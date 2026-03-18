@@ -1,10 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import Lightbox from "../components/Lightbox";
 
 const portfolio = await getCollection("portfolio");
-const allImages = portfolio.map((entry) => entry.data);
+const allImages = await Promise.all(
+    portfolio.map(async (entry) => {
+        const thumbnail = await getImage({ src: entry.data.image, width: 400, format: "webp" });
+        return { ...entry.data, thumbnail };
+    })
+);
 
 export type AllImages = typeof allImages;
 ---
