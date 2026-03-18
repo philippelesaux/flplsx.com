@@ -6,9 +6,9 @@ export default function Lightbox({ allImages }: { allImages: AllImages }) {
             {
                 allImages.map((entry) => (
                     <img
-                        src={entry.image.src}
+                        src={entry.thumbnail.src}
                         alt={entry.alt}
-                        width={entry.image.width}
+                        width={400}
                         className="rounded mb-1 border border-transparent hover:border-gray-300 transition-all duration-300 ease-in-out hover:shadow-lg"
                         loading="lazy"
                     />
