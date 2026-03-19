@@ -17,8 +17,15 @@ const { title } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<style is:global>
+			[data-nav].scrolled {
+				background-image: none;
+				background-color: rgb(24 24 27 / 0.9);
+				backdrop-filter: blur(8px);
+			}
+		</style>
 	</head>
-	<body class="min-h-screen flex flex-col bg-linear-to-bl from-slate-50 to-slate-500">
+	<body class="min-h-screen flex flex-col bg-zinc-950">
 		<main class="flex-1">
 			<NavigationBar />
 			<slot />
@@ -26,3 +33,18 @@ const { title } = Astro.props;
 		<Footer class="" />
 	</body>
 </html>
+
+<script>
+	const nav = document.querySelector('[data-nav]');
+	const hero = document.querySelector('[data-hero]');
+	if (nav && hero) {
+		const navEl = nav;
+		const heroEl = hero;
+		function update() {
+			const heroBottom = heroEl.getBoundingClientRect().bottom;
+			navEl.classList.toggle('scrolled', heroBottom <= 0);
+		}
+		window.addEventListener('scroll', update, { passive: true });
+		update();
+	}
+</script>

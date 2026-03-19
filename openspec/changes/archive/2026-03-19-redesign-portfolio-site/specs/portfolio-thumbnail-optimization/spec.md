@@ -1,4 +1,4 @@
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Thumbnails are optimized at build time
 At build time, the system SHALL generate a compressed WebP version of each portfolio image at 400px width using `getImage()` from `astro:assets` for grid thumbnails, AND a separate 1400px WebP version for any images selected as hero candidates. The raw source images SHALL NOT be served to the browser.
@@ -11,13 +11,6 @@ At build time, the system SHALL generate a compressed WebP version of each portf
 - **WHEN** a portfolio image is wider than 400px
 - **THEN** the generated thumbnail SHALL have a width of 400px with aspect ratio preserved
 
-### Requirement: Hero images are generated at 1400px width
+#### Scenario: Hero images are generated at 1400px width
 - **WHEN** the site is built with `astro build`
 - **THEN** each of the 5 hero candidate images SHALL also have a 1400px WebP file generated in `/_astro/`
-
-### Requirement: Lightbox receives optimized thumbnail URLs
-The `Lightbox` component SHALL receive pre-optimized thumbnail URLs rather than raw image paths, so no transformation or large file download occurs at runtime.
-
-#### Scenario: Grid renders optimized images
-- **WHEN** the portfolio grid is rendered in the browser
-- **THEN** each `<img>` src SHALL point to a WebP file in `/_astro/`, not the original JPEG source

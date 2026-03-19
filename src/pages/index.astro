@@ -3,8 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 import Lightbox from "../components/Lightbox";
+import Hero from "../components/Hero";
 
 const portfolio = await getCollection("portfolio");
+portfolio.sort(() => Math.random() - 0.5);
+
+const heroEntries = portfolio.slice(0, 5);
+const heroImages = await Promise.all(
+    heroEntries.map(async (entry) => {
+        const image = await getImage({ src: entry.data.image, width: 1400, format: "webp" });
+        return { src: image.src, alt: entry.data.alt };
+    })
+);
+
 const allImages = await Promise.all(
     portfolio.map(async (entry) => {
         const thumbnail = await getImage({ src: entry.data.image, width: 400, format: "webp" });
@@ -13,9 +24,11 @@ const allImages = await Promise.all(
 );
 
 export type AllImages = typeof allImages;
+export type HeroImages = typeof heroImages;
 ---
 <BaseLayout title="Home">
-    <div class="text-center mt-8 mb-16">
+    <Hero client:load heroImages={heroImages} />
+    <div class="text-center mb-16">
         <Lightbox
             client:load
             allImages={allImages}
