@@ -33,7 +33,7 @@ export default function Lightbox({ allImages }: { allImages: AllImages }) {
                     src={entry.thumbnail.src}
                     alt={entry.alt}
                     width={400}
-                    className={`rounded mb-1 border border-transparent hover:border-zinc-600 transition-all duration-500 ease-in-out hover:shadow-lg opacity-0 translate-y-4 ${STAGGER_DELAYS[index % STAGGER_DELAYS.length]}`}
+                    className={`mb-1 border border-transparent hover:border-zinc-200 transition-all duration-500 ease-in-out hover:shadow-lg opacity-0 translate-y-4 ${STAGGER_DELAYS[index % STAGGER_DELAYS.length]}`}
                     loading="lazy"
                 />
             ))}

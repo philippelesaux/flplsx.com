@@ -1,11 +1,4 @@
-## Requirements
-
-### Requirement: Nav has a dark gradient scrim over the hero
-The navigation bar SHALL be `position: fixed` with white text and a `from-black/50 to-transparent` gradient background when the hero section is visible in the viewport. The gradient ensures nav text is legible over any image brightness without a solid background.
-
-#### Scenario: Nav has gradient scrim on page load
-- **WHEN** a user loads the home page and the hero is visible
-- **THEN** the nav SHALL display a dark-to-transparent gradient background with white text
+## MODIFIED Requirements
 
 ### Requirement: Nav solidifies when hero scrolls out of view
 The navigation bar SHALL transition to a white semi-transparent background (`white/0.9`) with backdrop blur and dark text (`zinc-900`) when the hero section is no longer visible, ensuring readability over the white page body.
@@ -24,10 +17,3 @@ On pages that do not include a hero section (e.g. `/about`), the navigation bar 
 #### Scenario: About page nav has dark text on load
 - **WHEN** the about page loads (no hero present)
 - **THEN** the nav SHALL display dark text (`zinc-900`) without a dark gradient scrim
-
-### Requirement: Nav structure accommodates future links
-The nav SHALL be structured to support additional links beyond the current single "about" item without layout changes.
-
-#### Scenario: Nav renders with multiple items
-- **WHEN** additional navigation links are added
-- **THEN** the nav SHALL display them inline without requiring structural changes to the layout
