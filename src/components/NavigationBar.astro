@@ -2,10 +2,49 @@
 
 ---
 
-<nav data-nav class="fixed top-0 left-0 right-0 z-20 py-4 px-8 flex items-baseline justify-between text-zinc-900 bg-transparent transition-all duration-300">
-    <a data-nav-name href="/" class="tracking-wider border-transparent border-b-2" style="font-family: 'Fraunces Variable', serif;">Philippe LeSaux</a>
-    <ul class="flex justify-end gap-4 text-sm font-bold tracking-wide">
-        <li class="list-none"><a href="/about" class="border-transparent border-b-2">about</a></li>
+<nav data-nav>
+    <a data-nav-name href="/">Philippe LeSaux</a>
+    <ul>
+        <li><a href="/about">about</a></li>
     </ul>
 </nav>
 
+<style>
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        padding: var(--space-4) var(--space-8);
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        color: var(--color-text);
+        background: transparent;
+        transition: all 300ms ease;
+    }
+
+    a {
+        letter-spacing: var(--tracking-wider);
+        border-bottom: 2px solid transparent;
+        font-family: inherit;
+    }
+
+    [data-nav-name] {
+        font-family: 'Fraunces Variable', serif;
+    }
+
+    ul {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--space-4);
+        list-style: none;
+    }
+
+    ul a {
+        font-size: var(--text-sm);
+        font-weight: 700;
+        letter-spacing: var(--tracking-wide);
+    }
+</style>

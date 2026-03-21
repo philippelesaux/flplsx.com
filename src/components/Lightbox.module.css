@@ -1,0 +1,39 @@
+.grid {
+    padding: var(--space-2);
+    margin: var(--space-8) auto;
+    max-width: 1536px;
+    gap: var(--space-2);
+    columns: 2;
+}
+
+@media (min-width: 768px) {
+    .grid { columns: 3; }
+}
+
+@media (min-width: 1024px) {
+    .grid { columns: 4; }
+}
+
+@media (min-width: 1280px) {
+    .grid { columns: 5; }
+}
+
+.thumbnail {
+    display: block;
+    width: 100%;
+    margin-bottom: var(--space-1);
+    border: 1px solid transparent;
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 500ms ease-in-out, transform 500ms ease-in-out, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.thumbnail.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.thumbnail:hover {
+    border-color: var(--color-border);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}

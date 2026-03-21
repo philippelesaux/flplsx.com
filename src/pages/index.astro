@@ -27,8 +27,15 @@ export type AllImages = typeof allImages;
 export type HeroImages = typeof heroImages;
 ---
 <BaseLayout title="Home">
+
+<style>
+    .gallery {
+        text-align: center;
+        margin-bottom: var(--space-16);
+    }
+</style>
     <Hero client:load heroImages={heroImages} />
-    <div class="text-center mb-16">
+    <div class="gallery">
         <Lightbox
             client:load
             allImages={allImages}

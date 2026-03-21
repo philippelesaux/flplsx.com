@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { AllImages } from "../pages/index.astro";
-
-const STAGGER_DELAYS = ['delay-0', 'delay-75', 'delay-150', 'delay-200', 'delay-300'];
+import styles from "./Lightbox.module.css";
 
 export default function Lightbox({ allImages }: { allImages: AllImages }) {
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
@@ -12,8 +11,7 @@ export default function Lightbox({ allImages }: { allImages: AllImages }) {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('opacity-100', 'translate-y-0');
-                        entry.target.classList.remove('opacity-0', 'translate-y-4');
+                        entry.target.classList.add(styles.visible!);
                         observer.unobserve(entry.target);
                     }
                 });
@@ -25,7 +23,7 @@ export default function Lightbox({ allImages }: { allImages: AllImages }) {
     }, []);
 
     return (
-        <div className="p-2 mx-auto container gap-2 my-8 columns-2 md:columns-3 lg:columns-4 xl:columns-5">
+        <div className={styles.grid}>
             {allImages.map((entry, index) => (
                 <img
                     key={entry.thumbnail.src}
@@ -33,7 +31,8 @@ export default function Lightbox({ allImages }: { allImages: AllImages }) {
                     src={entry.thumbnail.src}
                     alt={entry.alt}
                     width={400}
-                    className={`mb-1 border border-transparent hover:border-zinc-200 transition-all duration-500 ease-in-out hover:shadow-lg opacity-0 translate-y-4 ${STAGGER_DELAYS[index % STAGGER_DELAYS.length]}`}
+                    className={styles.thumbnail}
+                    style={{ transitionDelay: `${index * 75}ms` }}
                     loading="lazy"
                 />
             ))}

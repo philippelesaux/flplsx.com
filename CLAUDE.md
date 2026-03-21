@@ -14,7 +14,7 @@ There are no lint or test commands configured.
 
 ## Architecture
 
-Personal portfolio site for Philippe LeSaux built with **Astro 6**, **React 19**, and **Tailwind CSS**.
+Personal portfolio site for Philippe LeSaux built with **Astro 6** and **React 19**.
 
 ### Component model
 
@@ -28,7 +28,14 @@ Portfolio images are declared in `src/data/portfolio.json` and loaded via Astro 
 
 ### Styling
 
-Tailwind CSS with a custom `fontFamily.sans` override using Plus Jakarta Sans Variable. No extra plugins. All classes are scanned from `src/`.
+Vanilla CSS with no framework dependencies. Three layers:
+
+- **`src/styles/tokens.css`** — CSS custom properties defining the full design token set (colors, spacing, type scale, letter-spacing). Single source of truth for all design values.
+- **`src/styles/global.css`** — Site-wide base styles: CSS reset, body, nav scroll states (`[data-nav].scrolled`, `[data-nav].hero-visible`), and nav name sizing. Imported in `BaseLayout.astro`.
+- **Scoped `<style>` blocks** in each `.astro` component — component-level styles using token variables.
+- **CSS Modules** (`.module.css`) for React components (`Hero.module.css`, `Lightbox.module.css`) — scoped styles since Astro scoped CSS cannot penetrate React islands.
+
+JS only toggles semantic class names (`.active`, `.visible`) — never style values directly.
 
 ### TypeScript
 
