@@ -1,4 +1,4 @@
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Portfolio grid images fade in on scroll
 Each image in the portfolio grid SHALL begin invisible and animate to fully visible with an upward translate when it enters the viewport, creating a staggered reveal effect. The IntersectionObserver logic SHALL be implemented in vanilla JS inside an Astro `<script>` block, not in a React component.

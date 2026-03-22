@@ -1,0 +1,299 @@
+---
+import type { AllImages } from "../pages/index.astro";
+
+interface Props {
+    allImages: AllImages;
+}
+
+const { allImages } = Astro.props;
+---
+
+<div class="gallery-grid">
+    {allImages.map((image, index) => (
+        <button
+            class="thumb-btn"
+            data-display={image.display.src}
+            data-title={image.title}
+            data-location={image.location}
+            data-alt={image.alt}
+            aria-label={`View ${image.title}, ${image.location}`}
+        >
+            <img
+                src={image.thumbnail.src}
+                alt={image.alt}
+                width={400}
+                class="thumb-img"
+                style={`transition-delay: ${index * 75}ms`}
+                loading="lazy"
+            />
+        </button>
+    ))}
+</div>
+
+<dialog class="photo-dialog" aria-label="Photo viewer">
+    <img class="dialog-img" src="" alt="" />
+    <div class="dialog-bar">
+        <div class="dialog-meta">
+            <span class="dialog-title"></span>
+            <span class="dialog-location"></span>
+        </div>
+        <div class="dialog-controls">
+            <button class="dialog-btn" data-prev aria-label="Previous photo">&#8592;</button>
+            <button class="dialog-btn" data-close aria-label="Close photo viewer">&#10005;</button>
+            <button class="dialog-btn" data-next aria-label="Next photo">&#8594;</button>
+        </div>
+    </div>
+</dialog>
+
+<style>
+    /* Grid */
+    .gallery-grid {
+        padding: var(--space-2);
+        margin: var(--space-8) auto;
+        max-width: 1536px;
+        columns: 2;
+        gap: var(--space-4);
+    }
+
+    @media (min-width: 768px) { .gallery-grid { columns: 3; } }
+    @media (min-width: 1024px) { .gallery-grid { columns: 4; } }
+    @media (min-width: 1280px) { .gallery-grid { columns: 5; } }
+
+    /* Thumbnail button */
+    .thumb-btn {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        margin-bottom: var(--space-4);
+        background: none;
+        border: none;
+        cursor: pointer;
+        break-inside: avoid;
+    }
+
+    /* Thumbnail image */
+    .thumb-img {
+        display: block;
+        width: 100%;
+        clip-path: inset(0);
+        opacity: 0;
+        transform: translateY(1rem);
+        transition: opacity 500ms ease-in-out, transform 200ms ease-out;
+    }
+
+    .thumb-img.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .thumb-img.visible:hover {
+        transform: scale(1.03);
+    }
+
+    /* Dialog */
+    .photo-dialog {
+        width: 100vw;
+        height: 100dvh;
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: #000;
+    }
+
+    .photo-dialog[open] {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .photo-dialog::backdrop {
+        background: rgb(0 0 0 / 0.9);
+    }
+
+    .dialog-img {
+        flex: 1;
+        width: 100%;
+        min-height: 0;
+        object-fit: contain;
+    }
+
+    .dialog-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+        padding: var(--space-2) var(--space-4);
+        background: rgb(0 0 0 / 0.6);
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .dialog-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+        min-width: 0;
+    }
+
+    .dialog-title {
+        font-size: var(--text-sm);
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .dialog-location {
+        font-size: var(--text-sm);
+        color: rgb(255 255 255 / 0.6);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .dialog-controls {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        flex-shrink: 0;
+    }
+
+    .dialog-btn {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: var(--text-xl);
+        padding: var(--space-1) var(--space-2);
+        opacity: 0.8;
+        transition: opacity 150ms ease;
+    }
+
+    .dialog-btn:hover {
+        opacity: 1;
+    }
+</style>
+
+<script>
+    const grid = document.querySelector<HTMLElement>('.gallery-grid')!;
+    const dialog = document.querySelector<HTMLDialogElement>('.photo-dialog')!;
+    const dialogImg = dialog.querySelector<HTMLImageElement>('.dialog-img')!;
+    const dialogTitle = dialog.querySelector<HTMLElement>('.dialog-title')!;
+    const dialogLocation = dialog.querySelector<HTMLElement>('.dialog-location')!;
+    const buttons = Array.from(grid.querySelectorAll<HTMLButtonElement>('.thumb-btn'));
+    const thumbImgs = buttons.map(btn => btn.querySelector<HTMLImageElement>('.thumb-img')!);
+
+    // Collect image data from data attributes
+    const images = buttons.map((btn) => ({
+        src: btn.dataset.display ?? '',
+        alt: btn.dataset.alt ?? '',
+        title: btn.dataset.title ?? '',
+        location: btn.dataset.location ?? '',
+    }));
+
+    type VTDocument = Document & { startViewTransition?: (cb: () => void) => { finished: Promise<void> } };
+    const doc = document as VTDocument;
+
+    let currentIndex = 0;
+
+    function setVTName(el: HTMLElement, name: string) {
+        if (name) {
+            el.style.setProperty('view-transition-name', name);
+        } else {
+            el.style.removeProperty('view-transition-name');
+        }
+    }
+
+    function populate(index: number) {
+        const img = images[index]!;
+        dialogImg.src = img.src;
+        dialogImg.alt = img.alt;
+        dialogTitle.textContent = img.title;
+        dialogLocation.textContent = img.location;
+    }
+
+    function openDialog(index: number) {
+        // Clear any lingering names first
+        buttons.forEach(btn => setVTName(btn, ''));
+        setVTName(dialogImg, '');
+
+        currentIndex = index;
+
+        if (doc.startViewTransition) {
+            // "before" snapshot: button has the name (thumbnail visible)
+            setVTName(buttons[index]!, 'active-photo');
+            doc.startViewTransition(() => {
+                // "after" snapshot: dialogImg has the name, button does not
+                setVTName(buttons[index]!, '');
+                populate(index);
+                dialog.showModal();
+                setVTName(dialogImg, 'active-photo');
+            }).finished.then(() => setVTName(dialogImg, ''));
+        } else {
+            populate(index);
+            dialog.showModal();
+        }
+    }
+
+    function closeDialog() {
+        if (doc.startViewTransition) {
+            // "before" snapshot: dialogImg has the name (full-size visible)
+            setVTName(dialogImg, 'active-photo');
+            doc.startViewTransition(() => {
+                // "after" snapshot: button has the name, dialogImg does not
+                setVTName(dialogImg, '');
+                setVTName(buttons[currentIndex]!, 'active-photo');
+                dialog.close();
+            }).finished.then(() => setVTName(buttons[currentIndex]!, ''));
+        } else {
+            dialog.close();
+        }
+    }
+
+    function navigate(delta: number) {
+        currentIndex = (currentIndex + delta + images.length) % images.length;
+        populate(currentIndex);
+    }
+
+    // Thumbnail clicks
+    buttons.forEach((btn, i) => {
+        btn.addEventListener('click', () => openDialog(i));
+    });
+
+    // Close button
+    dialog.querySelector('[data-close]')!.addEventListener('click', closeDialog);
+
+    // Prev / next
+    dialog.querySelector('[data-prev]')!.addEventListener('click', () => navigate(-1));
+    dialog.querySelector('[data-next]')!.addEventListener('click', () => navigate(1));
+
+    // Keyboard
+    dialog.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    // Backdrop click
+    dialog.addEventListener('click', (e: MouseEvent) => {
+        if (e.target === dialog) closeDialog();
+    });
+
+    // IntersectionObserver entrance animations
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const img = entry.target as HTMLImageElement;
+                    img.classList.add('visible');
+                    requestAnimationFrame(() => img.style.removeProperty('transition-delay'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.1 }
+    );
+
+    thumbImgs.forEach(img => observer.observe(img));
+</script>
