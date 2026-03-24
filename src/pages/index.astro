@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 import PhotoGallery from "../components/PhotoGallery.astro";
-import Hero from "../components/Hero";
+import Hero from "../components/Hero.astro";
 
 const portfolio = await getCollection("portfolio");
 portfolio.sort(() => Math.random() - 0.5);
@@ -24,10 +24,13 @@ const allImages = await Promise.all(
     })
 );
 
-export type AllImages = typeof allImages;
-export type HeroImages = typeof heroImages;
 ---
 <BaseLayout title="Home">
+    <Hero heroImages={heroImages} />
+    <div class="gallery">
+        <PhotoGallery allImages={allImages} />
+    </div>
+</BaseLayout>
 
 <style>
     .gallery {
@@ -35,8 +38,3 @@ export type HeroImages = typeof heroImages;
         margin-bottom: var(--space-16);
     }
 </style>
-    <Hero client:load heroImages={heroImages} />
-    <div class="gallery">
-        <PhotoGallery allImages={allImages} />
-    </div>
-</BaseLayout>

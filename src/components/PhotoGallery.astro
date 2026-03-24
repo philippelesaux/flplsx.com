@@ -1,8 +1,14 @@
 ---
-import type { AllImages } from "../pages/index.astro";
+interface GalleryImage {
+    thumbnail: { src: string };
+    display: { src: string };
+    title: string;
+    location: string;
+    alt: string;
+}
 
 interface Props {
-    allImages: AllImages;
+    allImages: GalleryImage[];
 }
 
 const { allImages } = Astro.props;
