@@ -6,10 +6,6 @@ import headshot from "../data/headshot.jpg";
 
 <BaseLayout title="About">
     <div class="about-wrapper">
-        <div class="about-header">
-            <h1>Philippe LeSaux</h1>
-            <h2><a href="/">Photographer</a>, Software Engineer, Musician</h2>
-        </div>
         <figure>
             <Image
                 src={headshot}
@@ -17,50 +13,53 @@ import headshot from "../data/headshot.jpg";
             />
             <figcaption>Photo by <a href="https://www.claywilliamsphoto.com">Clay Williams</a></figcaption>
         </figure>
-        <p>Philippe is a digital artist, jumping mediums from music to code to photography. Specializing in food and travel photography, his work has been featured in Time Out, Edible and Philly Mag. He takes too many pictures of his dog, Lenny.</p>
+        <div class="about-content">
+            <div class="identity">
+                <h1>Philippe LeSaux</h1>
+                <p class="roles">Photographer · Software Engineer</p>
+            </div>
+            <div class="credentials">
+                <h2 class="credentials-label">Featured in</h2>
+                <ul class="pub-list">
+                    <li><span class="pub-icon"></span>Time Out</li>
+                    <li><span class="pub-icon"></span>Edible</li>
+                    <li><span class="pub-icon"></span>Philly Mag</li>
+                </ul>
+            </div>
+            <p class="bio">I'm a digital artist, jumping mediums from music to code to photography. Specializing in food and travel photography, my work has been featured in Time Out, Edible and Philly Mag. I take too many pictures of my dog, Lenny.</p>
+        </div>
     </div>
 </BaseLayout>
 
 <style>
     .about-wrapper {
-        margin: 0 var(--space-8);
-    }
-
-    .about-header {
-        margin: var(--space-8) 0;
-    }
-
-    h1 {
-        margin: var(--space-4) 0;
-        text-align: center;
-        font-size: var(--text-5xl);
-        color: var(--color-accent);
-        letter-spacing: var(--tracking-wider);
-        font-family: 'Fraunces Variable', serif;
-        font-weight: 400;
-    }
-
-    h2 {
-        padding: 0 var(--space-4);
-        text-align: center;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: var(--tracking-wider);
-        color: var(--color-text-secondary);
-    }
-
-    figure {
-        width: 50%;
-        margin: var(--space-8) auto;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: var(--space-16) var(--space-8) var(--space-16);
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
     }
 
     @media (min-width: 768px) {
-        figure {
-            width: 33.333%;
+        .about-wrapper {
+            grid-template-columns: 2fr 3fr;
+            align-items: start;
         }
     }
 
+    figure {
+        width: 100%;
+        margin: 0;
+    }
+
+    figure img {
+        width: 100%;
+        display: block;
+    }
+
     figcaption {
+        margin-top: var(--space-2);
         text-align: right;
         font-size: var(--text-sm);
         color: var(--color-text-secondary);
@@ -70,7 +69,73 @@ import headshot from "../data/headshot.jpg";
         text-decoration: underline;
     }
 
-    p {
+    .about-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-8);
+    }
+
+    .identity {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+    }
+
+    h1 {
+        font-family: 'Fraunces Variable', serif;
+        font-size: var(--text-3xl);
+        font-weight: 400;
+        letter-spacing: var(--tracking-wider);
+        color: var(--color-text);
+        margin: 0;
+    }
+
+    @media (min-width: 768px) {
+        h1 {
+            font-size: var(--text-5xl);
+        }
+    }
+
+    .bio {
+        color: var(--color-text);
+        margin: 0;
+    }
+
+    .credentials-label {
+        font-size: var(--text-sm);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wider);
+        color: var(--color-text-muted);
+        margin: 0 0 var(--space-2);
+    }
+
+    .pub-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .pub-list li {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
         color: var(--color-text-secondary);
+    }
+
+    .pub-icon {
+        display: inline-block;
+        width: 0;
+        height: 0;
+    }
+
+    .roles {
+        font-size: var(--text-sm);
+        color: var(--color-text-secondary);
+        letter-spacing: var(--tracking-wide);
+        margin: 0;
     }
 </style>
