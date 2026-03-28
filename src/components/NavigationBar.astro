@@ -4,10 +4,25 @@
 
 <nav data-nav>
     <a data-nav-name href="/">Philippe LeSaux</a>
-    <ul>
+    <ul class="desktop-links">
+        <li><a href="/">photography</a></li>
         <li><a href="/about">about</a></li>
     </ul>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+    </button>
 </nav>
+
+<div class="mobile-menu" data-mobile-menu>
+    <ul>
+        <li><a href="/">photography</a></li>
+        <li><a href="/about">about</a></li>
+    </ul>
+</div>
 
 <style>
     nav {
@@ -35,16 +50,129 @@
         font-family: 'Fraunces Variable', serif;
     }
 
-    ul {
+    .desktop-links {
         display: flex;
         justify-content: flex-end;
         gap: var(--space-4);
         list-style: none;
     }
 
-    ul a {
+    .desktop-links a {
         font-size: var(--text-sm);
         font-weight: 700;
         letter-spacing: var(--tracking-wide);
     }
+
+    .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: inherit;
+        line-height: 0;
+        align-self: center;
+    }
+
+    /* Mobile dropdown */
+    .mobile-menu {
+        position: fixed;
+        top: 0; /* overridden dynamically by JS */
+        left: 0;
+        right: 0;
+        z-index: 19;
+        background-color: rgb(255 255 255 / 0.9);
+        backdrop-filter: blur(8px);
+        clip-path: inset(0 0 100% 0);
+        transition: clip-path 150ms ease;
+        display: none;
+    }
+
+    .mobile-menu.open {
+        clip-path: inset(0 0 0% 0);
+    }
+
+    .mobile-menu ul {
+        list-style: none;
+        padding: var(--space-8);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-8);
+    }
+
+    .mobile-menu a {
+        font-size: var(--text-sm);
+        font-weight: 700;
+        letter-spacing: var(--tracking-wide);
+        color: var(--color-text);
+        border-bottom: 2px solid transparent;
+    }
+
+    .mobile-menu a:hover {
+        border-bottom-color: currentColor;
+    }
+
+    @media (max-width: 767px) {
+        .desktop-links {
+            display: none;
+        }
+
+        .hamburger {
+            display: block;
+        }
+
+        .mobile-menu {
+            display: block;
+        }
+    }
 </style>
+
+<script>
+    const hamburger = document.querySelector<HTMLButtonElement>('.hamburger');
+    const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+    const nav = document.querySelector<HTMLElement>('[data-nav]');
+
+    function positionMenu() {
+        if (nav && menu) {
+            menu.style.top = nav.offsetHeight + 'px';
+        }
+    }
+
+    positionMenu();
+    window.addEventListener('resize', positionMenu, { passive: true });
+
+    function open() {
+        nav?.classList.add('scrolled');
+        nav?.classList.remove('hero-visible');
+        menu?.classList.add('open');
+        hamburger?.setAttribute('aria-expanded', 'true');
+        hamburger?.setAttribute('aria-label', 'Close menu');
+
+        // Re-measure nav height on each frame while it transitions (300ms)
+        const start = performance.now();
+        function track(now: number) {
+            positionMenu();
+            if (now - start < 300) requestAnimationFrame(track);
+        }
+        requestAnimationFrame(track);
+    }
+
+    function close() {
+        menu?.classList.remove('open');
+        const scrolled = window.scrollY > 0;
+        const hero = document.querySelector('[data-hero]');
+        nav?.classList.toggle('scrolled', scrolled);
+        nav?.classList.toggle('hero-visible', !scrolled && !!hero);
+        hamburger?.setAttribute('aria-expanded', 'false');
+        hamburger?.setAttribute('aria-label', 'Open menu');
+    }
+
+    hamburger?.addEventListener('click', () => {
+        const isOpen = menu?.classList.contains('open');
+        isOpen ? close() : open();
+    });
+
+    menu?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', close);
+    });
+</script>
