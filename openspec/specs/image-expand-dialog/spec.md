@@ -1,3 +1,7 @@
+## Purpose
+
+Clicking a portfolio thumbnail opens a full-screen native `<dialog>` with the full-size image, title, location, and prev/next navigation. Opens and closes with a View Transitions morph animation as progressive enhancement.
+
 ## Requirements
 
 ### Requirement: Thumbnail opens full-size image in a dialog
@@ -38,15 +42,20 @@ The dialog SHALL provide navigation to the previous and next images without clos
 - **THEN** the dialog SHALL wrap to the first image, and vice versa
 
 ### Requirement: View Transitions morph animation on open and close
-Opening and closing the dialog SHALL animate with a View Transitions morph between the thumbnail and the full-size image, as progressive enhancement.
+Opening and closing the dialog SHALL animate with a View Transitions morph between the thumbnail and the full-size image, as progressive enhancement. All close paths — close button, backdrop click, and Escape key — SHALL route through the animated close function.
 
 #### Scenario: Open triggers morph from thumbnail to dialog image
 - **WHEN** a thumbnail is clicked
 - **THEN** `document.startViewTransition` SHALL be used to morph the thumbnail into the dialog image using a shared `view-transition-name`
 
 #### Scenario: Close triggers morph from dialog image to thumbnail
-- **WHEN** the dialog is closed
+- **WHEN** the dialog is closed via the close button or backdrop click
 - **THEN** `document.startViewTransition` SHALL morph the dialog image back to the thumbnail
+
+#### Scenario: Escape key close triggers morph animation
+- **WHEN** the user presses Escape while the dialog is open
+- **THEN** the `cancel` event SHALL be intercepted via `preventDefault()`
+- **THEN** the animated close function SHALL run, morphing the dialog image back to the thumbnail
 
 #### Scenario: View Transitions unavailable — dialog opens directly
 - **WHEN** `document.startViewTransition` is not available in the browser
