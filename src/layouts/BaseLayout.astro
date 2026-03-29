@@ -31,16 +31,8 @@ const { title } = Astro.props;
 </html>
 
 <script>
-	const nav = document.querySelector('[data-nav]');
+	import { initScrollNav } from '../scripts/scroll-nav';
+	const nav = document.querySelector<HTMLElement>('[data-nav]');
 	const hero = document.querySelector('[data-hero]');
-	if (nav) {
-		const navEl = nav;
-		function update() {
-			const scrolled = window.scrollY > 0;
-			navEl.classList.toggle('scrolled', scrolled);
-			navEl.classList.toggle('hero-visible', !scrolled && !!hero);
-		}
-		window.addEventListener('scroll', update, { passive: true });
-		update();
-	}
+	if (nav) initScrollNav(nav, hero);
 </script>

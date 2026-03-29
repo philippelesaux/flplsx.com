@@ -53,16 +53,6 @@ const { heroImages } = Astro.props;
 </style>
 
 <script>
-    const hero = document.querySelector("[data-hero]");
-    const images = hero?.querySelectorAll<HTMLImageElement>(".image") ?? [];
-    let current = 0;
-
-    if (images.length > 0) {
-        images[0]!.classList.add("active");
-        setInterval(() => {
-            images[current]!.classList.remove("active");
-            current = (current + 1) % images.length;
-            images[current]!.classList.add("active");
-        }, 5000);
-    }
+    import { initHero } from '../scripts/hero';
+    initHero(document.querySelector<HTMLElement>('[data-hero]')!);
 </script>
