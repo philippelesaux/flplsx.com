@@ -40,6 +40,31 @@ JS only toggles semantic class names (`.active`, `.visible`) — never style val
 
 `tsconfig.json` extends `astro/tsconfigs/strictest` — strict mode is on throughout.
 
+## OpenSpec
+
+This repo uses **OpenSpec** (`/opsx:*` slash commands) for structured change management. All significant work goes through a proposal → design → specs → tasks → implementation → archive workflow.
+
+### Directory layout
+
+```
+openspec/
+  specs/          ← live capability specs (source of truth for what the system does)
+  changes/        ← active changes in progress
+    archive/      ← completed and archived changes
+```
+
+### Key conventions
+
+- **Before starting new work**: run `/opsx:propose` or `/opsx:new` to create a change with artifacts
+- **Specs are the source of truth**: `openspec/specs/` holds what the system currently does; changes accumulate delta specs that sync to main on archive
+- **Active changes** are in `openspec/changes/<name>/` with `proposal.md`, `design.md`, `specs/`, and `tasks.md`
+- **Implementation**: `/opsx:apply` works through `tasks.md` checkboxes; mark each task complete as you go
+- **Archive**: run `/opsx:verify` before `/opsx:archive` — verify syncs delta specs to `openspec/specs/`
+
+### When to skip the workflow
+
+Trivial changes (typos, copy edits, single-line fixes) don't need a change. Use judgment — if a change affects architecture, introduces a pattern, or touches multiple files, use OpenSpec.
+
 ## Conventions
 
 ### Client-side scripts
