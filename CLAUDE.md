@@ -48,10 +48,19 @@ This repo uses **OpenSpec** (`/opsx:*` slash commands) for structured change man
 
 ```
 openspec/
-  specs/          ← live capability specs (source of truth for what the system does)
-  changes/        ← active changes in progress
-    archive/      ← completed and archived changes
+  specs/
+    <capability>/   ← one flat directory per capability
+      spec.md
+  changes/          ← active changes in progress
+    archive/        ← completed and archived changes
 ```
+
+Specs are **flat** — one level deep only. OpenSpec cannot traverse subdirectories.
+
+Specs fall into two conceptual categories (not directory structure):
+
+- **System specs** — cross-cutting decisions: coding conventions (`claude-md-conventions`), test infrastructure (`vitest-infrastructure`), CSS architecture (`design-token-system`), script module contracts (`hero-script`, `navigation-script`, `gallery-script`). Describe *how the codebase is structured*.
+- **Feature specs** — user-facing behaviour: pages, components, animations, interactions (`hero-carousel`, `mobile-nav-menu`, `scroll-aware-nav`, etc.). Describe *what the site does*.
 
 ### Key conventions
 
