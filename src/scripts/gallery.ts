@@ -35,6 +35,7 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
     }));
 
     let currentIndex = 0;
+    let transitioning = false;
 
     function populate(index: number): void {
         const img = images[index]!;
@@ -45,11 +46,13 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
     }
 
     async function openDialog(index: number): Promise<void> {
+        if (transitioning) return;
         buttons.forEach(btn => setVTName(btn, ''));
         setVTName(dialogImg, '');
         currentIndex = index;
 
         if (doc.startViewTransition) {
+            transitioning = true;
             setVTName(buttons[index]!, 'active-photo');
             await doc.startViewTransition(() => {
                 setVTName(buttons[index]!, '');
@@ -58,6 +61,7 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
                 setVTName(dialogImg, 'active-photo');
             }).finished;
             setVTName(dialogImg, '');
+            transitioning = false;
         } else {
             populate(index);
             dialog.showModal();
@@ -65,7 +69,9 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
     }
 
     async function closeDialog(): Promise<void> {
+        if (transitioning) return;
         if (doc.startViewTransition) {
+            transitioning = true;
             setVTName(dialogImg, 'active-photo');
             await doc.startViewTransition(() => {
                 setVTName(dialogImg, '');
@@ -73,6 +79,7 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
                 dialog.close();
             }).finished;
             setVTName(buttons[currentIndex]!, '');
+            transitioning = false;
         } else {
             dialog.close();
         }
@@ -98,6 +105,11 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
 
     dialog.addEventListener('click', (e: MouseEvent) => {
         if (e.target === dialog) closeDialog();
+    }, { signal });
+
+    dialog.addEventListener('cancel', (e: Event) => {
+        e.preventDefault();
+        closeDialog();
     }, { signal });
 
     const observer = new IntersectionObserver(

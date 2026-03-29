@@ -1,3 +1,7 @@
+## Purpose
+
+Build-time WebP generation for all portfolio images: 400px thumbnails for the grid and 1400px versions for hero candidates. Raw source images are never served to the browser.
+
 ## Requirements
 
 ### Requirement: Thumbnails are optimized at build time
@@ -12,6 +16,9 @@ At build time, the system SHALL generate a compressed WebP version of each portf
 - **THEN** the generated thumbnail SHALL have a width of 400px with aspect ratio preserved
 
 ### Requirement: Hero images are generated at 1400px width
+Each of the 5 hero candidate images SHALL have a 1400px WebP file generated at build time in `/_astro/`, separate from the 400px thumbnail pass.
+
+#### Scenario: Hero image files are present in build output
 - **WHEN** the site is built with `astro build`
 - **THEN** each of the 5 hero candidate images SHALL also have a 1400px WebP file generated in `/_astro/`
 
