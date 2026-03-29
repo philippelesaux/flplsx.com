@@ -1,0 +1,123 @@
+interface GalleryImage {
+    src: string;
+    alt: string;
+    title: string;
+    location: string;
+}
+
+type VTDocument = Document & {
+    startViewTransition?: (cb: () => void) => { finished: Promise<void> };
+};
+
+function setVTName(el: HTMLElement, name: string): void {
+    if (name) {
+        el.style.setProperty('view-transition-name', name);
+    } else {
+        el.style.removeProperty('view-transition-name');
+    }
+}
+
+export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () => void {
+    const dialogImg = dialog.querySelector<HTMLImageElement>('.dialog-img')!;
+    const dialogTitle = dialog.querySelector<HTMLElement>('.dialog-title')!;
+    const dialogLocation = dialog.querySelector<HTMLElement>('.dialog-location')!;
+    const buttons = Array.from(gridEl.querySelectorAll<HTMLButtonElement>('.thumb-btn'));
+    const thumbImgs = buttons.map(btn => btn.querySelector<HTMLImageElement>('.thumb-img')!);
+    const doc = document as VTDocument;
+    const ac = new AbortController();
+    const { signal } = ac;
+
+    const images: GalleryImage[] = buttons.map(btn => ({
+        src: btn.dataset.display ?? '',
+        alt: btn.dataset.alt ?? '',
+        title: btn.dataset.title ?? '',
+        location: btn.dataset.location ?? '',
+    }));
+
+    let currentIndex = 0;
+
+    function populate(index: number): void {
+        const img = images[index]!;
+        dialogImg.src = img.src;
+        dialogImg.alt = img.alt;
+        dialogTitle.textContent = img.title;
+        dialogLocation.textContent = img.location;
+    }
+
+    async function openDialog(index: number): Promise<void> {
+        buttons.forEach(btn => setVTName(btn, ''));
+        setVTName(dialogImg, '');
+        currentIndex = index;
+
+        if (doc.startViewTransition) {
+            setVTName(buttons[index]!, 'active-photo');
+            await doc.startViewTransition(() => {
+                setVTName(buttons[index]!, '');
+                populate(index);
+                dialog.showModal();
+                setVTName(dialogImg, 'active-photo');
+            }).finished;
+            setVTName(dialogImg, '');
+        } else {
+            populate(index);
+            dialog.showModal();
+        }
+    }
+
+    async function closeDialog(): Promise<void> {
+        if (doc.startViewTransition) {
+            setVTName(dialogImg, 'active-photo');
+            await doc.startViewTransition(() => {
+                setVTName(dialogImg, '');
+                setVTName(buttons[currentIndex]!, 'active-photo');
+                dialog.close();
+            }).finished;
+            setVTName(buttons[currentIndex]!, '');
+        } else {
+            dialog.close();
+        }
+    }
+
+    function navigate(delta: number): void {
+        currentIndex = (currentIndex + delta + images.length) % images.length;
+        populate(currentIndex);
+    }
+
+    buttons.forEach((btn, i) => {
+        btn.addEventListener('click', () => openDialog(i), { signal });
+    });
+
+    dialog.querySelector('[data-close]')!.addEventListener('click', closeDialog, { signal });
+    dialog.querySelector('[data-prev]')!.addEventListener('click', () => navigate(-1), { signal });
+    dialog.querySelector('[data-next]')!.addEventListener('click', () => navigate(1), { signal });
+
+    dialog.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'ArrowRight') navigate(1);
+    }, { signal });
+
+    dialog.addEventListener('click', (e: MouseEvent) => {
+        if (e.target === dialog) closeDialog();
+    }, { signal });
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const img = entry.target as HTMLImageElement;
+                    img.classList.add('visible');
+                    requestAnimationFrame(() => img.style.removeProperty('transition-delay'));
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.1 },
+    );
+
+    thumbImgs.forEach(img => observer.observe(img));
+
+    return () => {
+        ac.abort();
+        observer.disconnect();
+    };
+}

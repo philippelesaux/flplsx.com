@@ -128,51 +128,9 @@
 </style>
 
 <script>
-    const hamburger = document.querySelector<HTMLButtonElement>('.hamburger');
-    const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
-    const nav = document.querySelector<HTMLElement>('[data-nav]');
-
-    function positionMenu() {
-        if (nav && menu) {
-            menu.style.top = nav.offsetHeight + 'px';
-        }
-    }
-
-    positionMenu();
-    window.addEventListener('resize', positionMenu, { passive: true });
-
-    function open() {
-        nav?.classList.add('scrolled');
-        nav?.classList.remove('hero-visible');
-        menu?.classList.add('open');
-        hamburger?.setAttribute('aria-expanded', 'true');
-        hamburger?.setAttribute('aria-label', 'Close menu');
-
-        // Re-measure nav height on each frame while it transitions (300ms)
-        const start = performance.now();
-        function track(now: number) {
-            positionMenu();
-            if (now - start < 300) requestAnimationFrame(track);
-        }
-        requestAnimationFrame(track);
-    }
-
-    function close() {
-        menu?.classList.remove('open');
-        const scrolled = window.scrollY > 0;
-        const hero = document.querySelector('[data-hero]');
-        nav?.classList.toggle('scrolled', scrolled);
-        nav?.classList.toggle('hero-visible', !scrolled && !!hero);
-        hamburger?.setAttribute('aria-expanded', 'false');
-        hamburger?.setAttribute('aria-label', 'Open menu');
-    }
-
-    hamburger?.addEventListener('click', () => {
-        const isOpen = menu?.classList.contains('open');
-        isOpen ? close() : open();
-    });
-
-    menu?.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', close);
-    });
+    import { initNavigation } from '../scripts/navigation';
+    const nav = document.querySelector<HTMLElement>('[data-nav]')!;
+    const menu = document.querySelector<HTMLElement>('[data-mobile-menu]')!;
+    const hero = document.querySelector('[data-hero]');
+    initNavigation(nav, menu, hero);
 </script>
