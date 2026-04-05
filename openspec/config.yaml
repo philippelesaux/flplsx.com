@@ -1,15 +1,21 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Personal portfolio site for Philippe LeSaux. Built with Astro 6, vanilla CSS, TypeScript.
+  No UI framework (no React, Vue, etc.) — all interactivity is Astro components + vanilla TS scripts.
+
+  Specs describe ONLY user-observable behaviour: what a visitor sees, hears, or can do.
+  Specs must NOT describe: internal APIs, function names, class names, module structure,
+  CSS architecture, file layout, tooling setup, or implementation technology choices.
+  Those belong in CLAUDE.md, not in specs.
 
 rules:
+  specs:
+    - Write requirements from the user's perspective — describe what the user observes or can do, not how the code achieves it
+    - Never name internal identifiers: no function names, class names, CSS class names, TypeScript types, module paths, or file names
+    - Never prescribe implementation technology, framework APIs, or data structures
+    - Never describe test setup, tooling configuration, or build behaviour
+    - Each Scenario must be expressible as a user action or a visible state change — if it can only be described in terms of code, it does not belong in a spec
   tasks:
     - Follow TDD for every task that introduces or modifies behavior in src/scripts/*.ts — skip TDD for tasks that only touch CSS, Astro templates, JSON data, or configuration
     - Write the test file (src/scripts/<module>.test.ts) before writing any implementation code — map spec Requirement headings to describe() blocks and Scenario headings to it() blocks verbatim, using WHEN/THEN clauses as inline comments
