@@ -21,7 +21,7 @@ body {
   flex-direction: column;
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
 }
 

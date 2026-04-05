@@ -10,7 +10,8 @@ schema: spec-driven
 #     Domain: e-commerce platform
 
 rules:
-  - Follow TDD for every task that introduces or modifies behavior in src/scripts/*.ts — skip TDD for tasks that only touch CSS, Astro templates, JSON data, or configuration
-  - Write the test file (src/scripts/<module>.test.ts) before writing any implementation code — map spec Requirement headings to describe() blocks and Scenario headings to it() blocks verbatim, using WHEN/THEN clauses as inline comments
-  - Run npm test after writing tests and confirm the new tests fail before proceeding — if they pass unexpectedly, fix the test first
-  - Write the minimal implementation to make the failing tests pass, then run npm test again and confirm all tests pass before marking the task complete
+  tasks:
+    - Follow TDD for every task that introduces or modifies behavior in src/scripts/*.ts — skip TDD for tasks that only touch CSS, Astro templates, JSON data, or configuration
+    - Write the test file (src/scripts/<module>.test.ts) before writing any implementation code — map spec Requirement headings to describe() blocks and Scenario headings to it() blocks verbatim, using WHEN/THEN clauses as inline comments
+    - Run npm test after writing tests and confirm the new tests fail before proceeding — if they pass unexpectedly, fix the test first
+    - Write the minimal implementation to make the failing tests pass, then run npm test again and confirm all tests pass before marking the task complete
