@@ -64,7 +64,7 @@ Specs fall into two conceptual categories (not directory structure):
 
 ### Key conventions
 
-- **Before starting new work**: run `/opsx:propose` or `/opsx:new` to create a change with artifacts
+- **Before starting new work**: run `/opsx:new` to create a change and step through artifacts one at a time. Use `/opsx:propose` only when the user explicitly asks for a quick or all-in-one proposal (e.g. "propose only", "quick proposal"). Default to `new`.
 - **Specs are the source of truth**: `openspec/specs/` holds what the system currently does; changes accumulate delta specs that sync to main on archive
 - **Active changes** are in `openspec/changes/<name>/` with `proposal.md`, `design.md`, `specs/`, and `tasks.md`
 - **Implementation**: `/opsx:apply` works through `tasks.md` checkboxes; mark each task complete as you go
