@@ -67,6 +67,19 @@ The hamburger button SHALL be vertically centered relative to the nav bar in all
 - **WHEN** the page is scrolled and the name is rendered at `text-xl`
 - **THEN** the hamburger icon SHALL be vertically centered with the name
 
+### Requirement: Hamburger button communicates open state via ARIA
+The hamburger button SHALL update its `aria-expanded` and `aria-label` attributes to reflect the current open/closed state of the menu, so that the state is accessible to assistive technologies.
+
+#### Scenario: ARIA attributes reflect open state
+- **WHEN** the hamburger button is clicked and the menu opens
+- **THEN** the button's `aria-expanded` attribute SHALL be `"true"`
+- **THEN** the button's `aria-label` SHALL be `"Close menu"`
+
+#### Scenario: ARIA attributes reflect closed state
+- **WHEN** the hamburger button is clicked and the menu closes
+- **THEN** the button's `aria-expanded` attribute SHALL be `"false"`
+- **THEN** the button's `aria-label` SHALL be `"Open menu"`
+
 ### Requirement: Hamburger icon inherits nav text color
 The hamburger icon SHALL use `currentColor` for its stroke so it automatically matches the nav's text color in all states (white over hero, dark when scrolled).
 
