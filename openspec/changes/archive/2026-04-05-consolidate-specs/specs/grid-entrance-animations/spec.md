@@ -1,8 +1,4 @@
-## Purpose
-
-Portfolio grid images animate in as they scroll into view — starting invisible and transitioning to visible with an upward translate, staggered by position, using IntersectionObserver in vanilla JS.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Portfolio grid images fade in on scroll
 Each image in the portfolio grid SHALL begin invisible and animate to fully visible with an upward translate when it enters the viewport, creating a staggered reveal effect.

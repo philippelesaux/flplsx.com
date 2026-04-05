@@ -34,6 +34,8 @@ Vanilla CSS with no framework dependencies. Three layers:
 - **`src/styles/global.css`** — Site-wide base styles: CSS reset, body, nav scroll states (`[data-nav].scrolled`, `[data-nav].hero-visible`), and nav name sizing. Imported in `BaseLayout.astro`.
 - **Scoped `<style>` blocks** in each `.astro` component — component-level styles using token variables, placed after the template.
 
+Never hardcode a color, spacing, or typography value that exists in `tokens.css` — always reference the token variable (e.g. `var(--color-text)`, `var(--space-4)`).
+
 JS only toggles semantic class names (`.active`, `.visible`) — never style values directly.
 
 ### TypeScript
@@ -57,10 +59,7 @@ openspec/
 
 Specs are **flat** — one level deep only. OpenSpec cannot traverse subdirectories.
 
-Specs fall into two conceptual categories (not directory structure):
-
-- **System specs** — cross-cutting decisions: coding conventions (`claude-md-conventions`), test infrastructure (`vitest-infrastructure`), CSS architecture (`design-token-system`), script module contracts (`hero-script`, `navigation-script`, `gallery-script`). Describe *how the codebase is structured*.
-- **Feature specs** — user-facing behaviour: pages, components, animations, interactions (`hero-carousel`, `mobile-nav-menu`, `scroll-aware-nav`, etc.). Describe *what the site does*.
+Specs describe **user-observable behaviour** only — what the site does, not how it is built. Implementation conventions, module contracts, and tooling setup belong in this file (CLAUDE.md), not in specs.
 
 ### Key conventions
 
