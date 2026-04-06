@@ -1,4 +1,4 @@
-// Spec: openspec/specs/navigation-script/spec.md + openspec/specs/scroll-aware-nav/spec.md
+// Spec: openspec/specs/scroll-aware-nav/spec.md
 import { describe, expect, it } from 'vitest';
 import { initScrollNav } from './scroll-nav';
 
@@ -6,14 +6,8 @@ function buildNav(): HTMLElement {
     return document.createElement('nav');
 }
 
-describe('Requirement: initScrollNav factory is exported from src/scripts/scroll-nav.ts', () => {
-    it('Scenario: Module exports initScrollNav', () => {
-        expect(typeof initScrollNav).toBe('function');
-    });
-});
-
-describe('Requirement: Scroll state updates nav classes', () => {
-    it('Scenario: Nav gains hero-visible class at top with hero', () => {
+describe('Requirement: Nav scroll state is reflected via CSS classes', () => {
+    it('Scenario: Nav has hero-visible class at top of hero page', () => {
         const navEl = buildNav();
         const heroEl = document.createElement('section');
         initScrollNav(navEl, heroEl);
@@ -22,14 +16,14 @@ describe('Requirement: Scroll state updates nav classes', () => {
     });
 
     // Extra-spec: implicit negative of "Nav gains hero-visible class at top with hero"
-    it('Scenario: Nav has neither class at top without hero', () => {
+    it('Scenario: Nav has neither class at top of non-hero page', () => {
         const navEl = buildNav();
         initScrollNav(navEl, null);
         expect(navEl.classList.contains('hero-visible')).toBe(false);
         expect(navEl.classList.contains('scrolled')).toBe(false);
     });
 
-    it('Scenario: Nav gains scrolled class when page is scrolled', () => {
+    it('Scenario: Nav has scrolled class when page is scrolled', () => {
         const navEl = buildNav();
         const heroEl = document.createElement('section');
         initScrollNav(navEl, heroEl);

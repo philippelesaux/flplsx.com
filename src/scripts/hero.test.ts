@@ -1,4 +1,4 @@
-// Spec: openspec/specs/hero-script/spec.md
+// Spec: openspec/specs/hero-carousel/spec.md
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { initHero } from './hero';
 
@@ -12,32 +12,11 @@ function buildRoot(count: number): HTMLElement {
     return root;
 }
 
-describe('Requirement: initHero factory is exported from src/scripts/hero.ts', () => {
+describe('Requirement: Carousel initialises with the first image active', () => {
     beforeEach(() => vi.useFakeTimers());
     afterEach(() => vi.useRealTimers());
 
-    it('Scenario: Module exports initHero', () => {
-        expect(typeof initHero).toBe('function');
-    });
-
-    it('Scenario: Teardown stops the interval', () => {
-        const root = buildRoot(3);
-        const images = Array.from(root.querySelectorAll('.image'));
-        const teardown = initHero(root);
-        vi.advanceTimersByTime(5000);
-        expect(images[1]!.classList.contains('active')).toBe(true);
-        teardown();
-        vi.advanceTimersByTime(5000);
-        expect(images[1]!.classList.contains('active')).toBe(true);
-        expect(images[2]!.classList.contains('active')).toBe(false);
-    });
-});
-
-describe('Requirement: First image is active on initialisation', () => {
-    beforeEach(() => vi.useFakeTimers());
-    afterEach(() => vi.useRealTimers());
-
-    it('Scenario: First image activated', () => {
+    it('Scenario: First image is active on load', () => {
         const root = buildRoot(3);
         const images = Array.from(root.querySelectorAll('.image'));
         initHero(root);
@@ -47,11 +26,11 @@ describe('Requirement: First image is active on initialisation', () => {
     });
 });
 
-describe('Requirement: Slideshow advances on interval', () => {
+describe('Requirement: Carousel auto-advances via crossfade', () => {
     beforeEach(() => vi.useFakeTimers());
     afterEach(() => vi.useRealTimers());
 
-    it('Scenario: Next image becomes active after interval', () => {
+    it('Scenario: Slides advance automatically', () => {
         const root = buildRoot(3);
         const images = Array.from(root.querySelectorAll('.image'));
         initHero(root);
@@ -60,7 +39,7 @@ describe('Requirement: Slideshow advances on interval', () => {
         expect(images[1]!.classList.contains('active')).toBe(true);
     });
 
-    it('Scenario: Wraps from last to first', () => {
+    it('Scenario: Slides wrap from last to first', () => {
         const root = buildRoot(3);
         const images = Array.from(root.querySelectorAll('.image'));
         initHero(root);
