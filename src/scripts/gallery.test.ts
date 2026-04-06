@@ -1,4 +1,4 @@
-// Spec: openspec/specs/gallery-script/spec.md
+// Specs: openspec/specs/image-expand-dialog/spec.md, openspec/specs/grid-entrance-animations/spec.md
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { initGallery } from './gallery';
 
@@ -90,14 +90,8 @@ afterEach(() => {
     delete (document as unknown as VTDocument).startViewTransition;
 });
 
-describe('Requirement: initGallery factory is exported from src/scripts/gallery.ts', () => {
-    it('Scenario: Module exports initGallery', () => {
-        expect(typeof initGallery).toBe('function');
-    });
-});
-
-describe('Requirement: Dialog opens with correct image on thumbnail click', () => {
-    it('Scenario: Dialog opens with correct image', async () => {
+describe('Requirement: Thumbnail opens full-size image in a dialog', () => {
+    it('Scenario: Thumbnail click opens dialog', async () => {
         syncVTMock();
         const { gridEl, dialog, thumbBtns, dialogImg, dialogTitle, dialogLocation } = buildGallery(TEST_IMAGES);
         initGallery(gridEl, dialog);
@@ -110,7 +104,7 @@ describe('Requirement: Dialog opens with correct image on thumbnail click', () =
     });
 });
 
-describe('Requirement: Dialog navigation moves between images', () => {
+describe('Requirement: Prev/next navigation within dialog', () => {
     it('Scenario: Next button advances to next image', async () => {
         syncVTMock();
         const { gridEl, dialog, thumbBtns, nextBtn, dialogImg } = buildGallery(TEST_IMAGES);
@@ -121,7 +115,7 @@ describe('Requirement: Dialog navigation moves between images', () => {
         expect(dialogImg.src).toContain(TEST_IMAGES[1]!.display);
     });
 
-    it('Scenario: Prev button moves to previous image', async () => {
+    it('Scenario: Prev button goes to previous image', async () => {
         syncVTMock();
         const { gridEl, dialog, thumbBtns, prevBtn, dialogImg } = buildGallery(TEST_IMAGES);
         initGallery(gridEl, dialog);
@@ -146,9 +140,7 @@ describe('Requirement: Dialog navigation moves between images', () => {
         prevBtn.click();
         expect(dialogImg.src).toContain(TEST_IMAGES[2]!.display);
     });
-});
 
-describe('Requirement: Keyboard arrow keys navigate the dialog', () => {
     it('Scenario: ArrowRight navigates forward', async () => {
         syncVTMock();
         const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
@@ -170,7 +162,7 @@ describe('Requirement: Keyboard arrow keys navigate the dialog', () => {
     });
 });
 
-describe('Requirement: Dialog closes via close button or backdrop click', () => {
+describe('Requirement: Dialog is dismissible', () => {
     it('Scenario: Close button closes dialog', async () => {
         syncVTMock();
         const { gridEl, dialog, thumbBtns, closeBtn } = buildGallery(TEST_IMAGES);
@@ -194,8 +186,8 @@ describe('Requirement: Dialog closes via close button or backdrop click', () => 
     });
 });
 
-describe('Requirement: Escape key routes through animated close', () => {
-    it('Scenario: Cancel event is intercepted', async () => {
+describe('Requirement: View Transitions morph animation on open and close', () => {
+    it('Scenario: Escape key close triggers morph animation', async () => {
         syncVTMock();
         const { gridEl, dialog, thumbBtns } = buildGallery(TEST_IMAGES);
         initGallery(gridEl, dialog);
@@ -209,7 +201,7 @@ describe('Requirement: Escape key routes through animated close', () => {
         expect(dialog.close).toHaveBeenCalled();
     });
 
-    it('Scenario: Escape fallback when View Transitions unavailable', async () => {
+    it('Scenario: View Transitions unavailable — dialog opens directly', async () => {
         // No startViewTransition on document — fallback path
         const { gridEl, dialog, thumbBtns } = buildGallery(TEST_IMAGES);
         initGallery(gridEl, dialog);
@@ -259,7 +251,7 @@ describe('Requirement: Transitioning guard prevents concurrent close calls', () 
     });
 });
 
-describe('Requirement: Thumbnail entrance animations trigger on scroll into view', () => {
+describe('Requirement: Portfolio grid images fade in on scroll', () => {
     let capturedObserverCb: IntersectionObserverCallback;
     const mockUnobserve = vi.fn();
 

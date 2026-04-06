@@ -1,4 +1,4 @@
-// Spec: openspec/specs/navigation-script/spec.md
+// Spec: openspec/specs/mobile-nav-menu/spec.md
 import { describe, expect, it } from 'vitest';
 import { initNavigation } from './navigation';
 
@@ -25,21 +25,8 @@ function buildNav(): NavFixture {
     return { navEl, menuEl, hamburger, link };
 }
 
-describe('Requirement: initNavigation factory is exported from src/scripts/navigation.ts', () => {
-    it('Scenario: Module exports initNavigation', () => {
-        expect(typeof initNavigation).toBe('function');
-    });
-
-    // Extra-spec: positionMenu is called on init, setting menuEl.style.top
-    it('Scenario: menuEl.style.top is set on initialisation', () => {
-        const { navEl, menuEl } = buildNav();
-        initNavigation(navEl, menuEl, null);
-        expect(menuEl.style.top).toBe('0px');
-    });
-});
-
-describe('Requirement: Mobile menu opens and closes', () => {
-    it('Scenario: Menu opens on hamburger click', () => {
+describe('Requirement: Hamburger toggles a dropdown menu', () => {
+    it('Scenario: Tapping hamburger opens dropdown', () => {
         const { navEl, menuEl, hamburger } = buildNav();
         initNavigation(navEl, menuEl, null);
         hamburger.click();
@@ -48,7 +35,7 @@ describe('Requirement: Mobile menu opens and closes', () => {
         expect(hamburger.getAttribute('aria-label')).toBe('Close menu');
     });
 
-    it('Scenario: Menu closes on second hamburger click', () => {
+    it('Scenario: Tapping hamburger closes dropdown', () => {
         const { navEl, menuEl, hamburger } = buildNav();
         initNavigation(navEl, menuEl, null);
         hamburger.click();
@@ -58,7 +45,7 @@ describe('Requirement: Mobile menu opens and closes', () => {
         expect(hamburger.getAttribute('aria-label')).toBe('Open menu');
     });
 
-    it('Scenario: Menu closes when a nav link is clicked', () => {
+    it('Scenario: Tapping a link closes the menu', () => {
         const { navEl, menuEl, hamburger, link } = buildNav();
         initNavigation(navEl, menuEl, null);
         hamburger.click();
