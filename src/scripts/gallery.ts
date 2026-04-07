@@ -118,7 +118,6 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
                 if (entry.isIntersecting) {
                     const img = entry.target as HTMLImageElement;
                     img.classList.add('visible');
-                    requestAnimationFrame(() => img.style.removeProperty('transition-delay'));
                     observer.unobserve(entry.target);
                 }
             });
