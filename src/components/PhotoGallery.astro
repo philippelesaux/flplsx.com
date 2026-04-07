@@ -15,7 +15,7 @@ const { allImages } = Astro.props;
 ---
 
 <div class="gallery-grid">
-    {allImages.map((image, index) => (
+    {allImages.map((image) => (
         <button
             class="thumb-btn"
             data-display={image.display.src}
@@ -29,7 +29,6 @@ const { allImages } = Astro.props;
                 alt={image.alt}
                 width={400}
                 class="thumb-img"
-                style={`transition-delay: ${index * 75}ms`}
                 loading="lazy"
             />
         </button>

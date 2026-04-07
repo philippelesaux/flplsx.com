@@ -12,7 +12,7 @@ context: |
 rules:
   specs:
     - Write requirements from the user's perspective — describe what the user observes or can do, not how the code achieves it
-    - Never name internal identifiers: no function names, class names, CSS class names, TypeScript types, module paths, or file names
+    - Never name internal identifiers — no function names, class names, CSS class names, TypeScript types, module paths, or file names
     - Never prescribe implementation technology, framework APIs, or data structures
     - Never describe test setup, tooling configuration, or build behaviour
     - Each Scenario must be expressible as a user action or a visible state change — if it can only be described in terms of code, it does not belong in a spec
