@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { initGallery } from './gallery';
 
-interface VTDocument extends Document {
+interface VTDocument {
     startViewTransition?: (cb: () => void) => { finished: Promise<void> };
 }
 
