@@ -52,6 +52,8 @@ function buildGallery(images: ImageData[]): GalleryFixture {
 
     const dialogImg = document.createElement('img');
     dialogImg.className = 'dialog-img';
+    // Simulate cached image so the preload wait is skipped in tests
+    Object.defineProperty(dialogImg, 'complete', { get: () => true, configurable: true });
 
     const dialogTitle = document.createElement('span');
     dialogTitle.className = 'dialog-title';
@@ -248,6 +250,40 @@ describe('Requirement: Transitioning guard prevents concurrent close calls', () 
         // Third close works again
         closeBtn.click();
         expect(dialog.close).toHaveBeenCalledTimes(2);
+    });
+});
+
+describe('Requirement: Dialog displays the selected image immediately on open', () => {
+    it('Scenario: Second open shows new image immediately', async () => {
+        // First open — image A
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+
+        thumbBtns[0]!.click();
+        await Promise.resolve();
+        await Promise.resolve(); // settle .finished
+
+        // Close
+        const closeBtn = dialog.querySelector<HTMLButtonElement>('[data-close]')!;
+        closeBtn.click();
+        await Promise.resolve();
+        await Promise.resolve();
+
+        // Second open — capture dialogImg.src at the moment startViewTransition is called.
+        // It must already contain image B's URL (preloaded before the VT starts),
+        // not the previously displayed image A.
+        let srcAtVTStart = '';
+        (document as unknown as VTDocument).startViewTransition = vi.fn((cb: () => void) => {
+            srcAtVTStart = dialogImg.src;
+            cb();
+            return { finished: Promise.resolve() };
+        });
+
+        thumbBtns[1]!.click();
+        await Promise.resolve();
+
+        expect(srcAtVTStart).toContain(TEST_IMAGES[1]!.display);
     });
 });
 
