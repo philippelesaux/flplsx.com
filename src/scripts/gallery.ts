@@ -47,24 +47,31 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
 
     async function openDialog(index: number): Promise<void> {
         if (transitioning) return;
+        transitioning = true;
         buttons.forEach(btn => setVTName(btn, ''));
         setVTName(dialogImg, '');
         currentIndex = index;
 
+        populate(index);
+        if (!dialogImg.complete) {
+            await new Promise<void>(resolve => {
+                dialogImg.onload = () => resolve();
+                dialogImg.onerror = () => resolve();
+            });
+        }
+
         if (doc.startViewTransition) {
-            transitioning = true;
             setVTName(buttons[index]!, 'active-photo');
             await doc.startViewTransition(() => {
                 setVTName(buttons[index]!, '');
-                populate(index);
                 dialog.showModal();
                 setVTName(dialogImg, 'active-photo');
             }).finished;
             setVTName(dialogImg, '');
             transitioning = false;
         } else {
-            populate(index);
             dialog.showModal();
+            transitioning = false;
         }
     }
 
