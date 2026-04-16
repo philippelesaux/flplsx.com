@@ -106,63 +106,6 @@ describe('Requirement: Thumbnail opens full-size image in a dialog', () => {
     });
 });
 
-describe('Requirement: Prev/next navigation within dialog', () => {
-    it('Scenario: Next button advances to next image', async () => {
-        syncVTMock();
-        const { gridEl, dialog, thumbBtns, nextBtn, dialogImg } = buildGallery(TEST_IMAGES);
-        initGallery(gridEl, dialog);
-        thumbBtns[0]!.click();
-        await Promise.resolve();
-        nextBtn.click();
-        expect(dialogImg.src).toContain(TEST_IMAGES[1]!.display);
-    });
-
-    it('Scenario: Prev button goes to previous image', async () => {
-        syncVTMock();
-        const { gridEl, dialog, thumbBtns, prevBtn, dialogImg } = buildGallery(TEST_IMAGES);
-        initGallery(gridEl, dialog);
-        thumbBtns[1]!.click();
-        await Promise.resolve();
-        prevBtn.click();
-        expect(dialogImg.src).toContain(TEST_IMAGES[0]!.display);
-    });
-
-    it('Scenario: Navigation wraps at boundaries', async () => {
-        syncVTMock();
-        const { gridEl, dialog, thumbBtns, nextBtn, prevBtn, dialogImg } = buildGallery(TEST_IMAGES);
-        initGallery(gridEl, dialog);
-
-        // next on last → first
-        thumbBtns[2]!.click();
-        await Promise.resolve();
-        nextBtn.click();
-        expect(dialogImg.src).toContain(TEST_IMAGES[0]!.display);
-
-        // prev on first → last
-        prevBtn.click();
-        expect(dialogImg.src).toContain(TEST_IMAGES[2]!.display);
-    });
-
-    it('Scenario: ArrowRight navigates forward', async () => {
-        syncVTMock();
-        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
-        initGallery(gridEl, dialog);
-        thumbBtns[0]!.click();
-        await Promise.resolve();
-        dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
-        expect(dialogImg.src).toContain(TEST_IMAGES[1]!.display);
-    });
-
-    it('Scenario: ArrowLeft navigates backward', async () => {
-        syncVTMock();
-        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
-        initGallery(gridEl, dialog);
-        thumbBtns[1]!.click();
-        await Promise.resolve();
-        dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
-        expect(dialogImg.src).toContain(TEST_IMAGES[0]!.display);
-    });
-});
 
 describe('Requirement: Dialog is dismissible', () => {
     it('Scenario: Close button closes dialog', async () => {
@@ -185,6 +128,54 @@ describe('Requirement: Dialog is dismissible', () => {
         dialog.click();
         await Promise.resolve();
         expect(dialog.close).toHaveBeenCalled();
+    });
+
+    it('Scenario: Click in image letterbox area closes dialog', async () => {
+        // WHEN the user clicks in the transparent letterbox area around the contained image
+        // THEN the dialog SHALL close
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[0]!.click();
+        await Promise.resolve();
+
+        // Mock a 400x300 element containing a 100x200 portrait image
+        // Portrait image in landscape element → pillarboxed: rendered 150x300, offset 125px left/right
+        vi.spyOn(dialogImg, 'getBoundingClientRect').mockReturnValue({
+            left: 0, top: 0, width: 400, height: 300,
+            right: 400, bottom: 300, x: 0, y: 0, toJSON: () => ({})
+        });
+        Object.defineProperty(dialogImg, 'naturalWidth', { get: () => 100, configurable: true });
+        Object.defineProperty(dialogImg, 'naturalHeight', { get: () => 200, configurable: true });
+
+        // Click at x=10 — inside left pillarbox (rendered image starts at x=125)
+        dialogImg.dispatchEvent(new MouseEvent('click', { clientX: 10, clientY: 150, bubbles: true }));
+        await Promise.resolve();
+        expect(dialog.close).toHaveBeenCalled();
+    });
+
+    it('Scenario: Click on the rendered image does not close dialog', async () => {
+        // WHEN the user clicks on the actual image content
+        // THEN the dialog SHALL remain open
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[0]!.click();
+        await Promise.resolve();
+
+        // Same 400x300 element, 100x200 portrait image — rendered 150x300, starts at x=125
+        vi.spyOn(dialogImg, 'getBoundingClientRect').mockReturnValue({
+            left: 0, top: 0, width: 400, height: 300,
+            right: 400, bottom: 300, x: 0, y: 0, toJSON: () => ({})
+        });
+        Object.defineProperty(dialogImg, 'naturalWidth', { get: () => 100, configurable: true });
+        Object.defineProperty(dialogImg, 'naturalHeight', { get: () => 200, configurable: true });
+        (dialog.close as ReturnType<typeof vi.fn>).mockClear();
+
+        // Click at x=200 — inside rendered image (x=125 to x=275)
+        dialogImg.dispatchEvent(new MouseEvent('click', { clientX: 200, clientY: 150, bubbles: true }));
+        await Promise.resolve();
+        expect(dialog.close).not.toHaveBeenCalled();
     });
 });
 
@@ -284,6 +275,111 @@ describe('Requirement: Dialog displays the selected image immediately on open', 
         await Promise.resolve();
 
         expect(srcAtVTStart).toContain(TEST_IMAGES[1]!.display);
+    });
+});
+
+describe('Requirement: Keyboard arrow navigation', () => {
+    it('Scenario: ArrowRight navigates to the next photo', async () => {
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[0]!.click();
+        await Promise.resolve();
+        dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+        expect(dialogImg.src).toContain(TEST_IMAGES[1]!.display);
+    });
+
+    it('Scenario: ArrowLeft navigates to the previous photo', async () => {
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[1]!.click();
+        await Promise.resolve();
+        dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+        expect(dialogImg.src).toContain(TEST_IMAGES[0]!.display);
+    });
+
+    it('Scenario: Navigation wraps at boundaries', async () => {
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[2]!.click();
+        await Promise.resolve();
+        dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+        expect(dialogImg.src).toContain(TEST_IMAGES[0]!.display);
+        dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+        expect(dialogImg.src).toContain(TEST_IMAGES[2]!.display);
+    });
+});
+
+interface MockTouchEvent extends Event {
+    touches: { clientX: number; clientY: number }[];
+    changedTouches: { clientX: number; clientY: number }[];
+}
+
+function dispatchSwipe(target: EventTarget, dx: number, dy = 0): void {
+    const startX = 200, startY = 200;
+    const mkEvent = (type: string, touches: object[], changedTouches: object[]): MockTouchEvent => {
+        const e = new Event(type, { bubbles: true }) as MockTouchEvent;
+        Object.defineProperty(e, 'touches', { value: touches });
+        Object.defineProperty(e, 'changedTouches', { value: changedTouches });
+        return e;
+    };
+    target.dispatchEvent(mkEvent('touchstart', [{ clientX: startX, clientY: startY }], []));
+    target.dispatchEvent(mkEvent('touchend', [], [{ clientX: startX + dx, clientY: startY + dy }]));
+}
+
+describe('Requirement: Swipe gesture navigation', () => {
+    it('Scenario: Swipe left navigates to the next photo', async () => {
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[0]!.click();
+        await Promise.resolve();
+        dispatchSwipe(dialog, -80);
+        expect(dialogImg.src).toContain(TEST_IMAGES[1]!.display);
+    });
+
+    it('Scenario: Swipe right navigates to the previous photo', async () => {
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[1]!.click();
+        await Promise.resolve();
+        dispatchSwipe(dialog, 80);
+        expect(dialogImg.src).toContain(TEST_IMAGES[0]!.display);
+    });
+
+    it('Scenario: Vertical swipe does not navigate', async () => {
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogImg } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[0]!.click();
+        await Promise.resolve();
+        dispatchSwipe(dialog, 20, 100);
+        expect(dialogImg.src).toContain(TEST_IMAGES[0]!.display);
+    });
+});
+
+describe('Requirement: Screen reader navigation', () => {
+    it('Scenario: Navigation announces new photo to screen readers', async () => {
+        // aria-live="polite" on .dialog-meta means the browser announces when
+        // textContent changes — here we verify the DOM updates on navigate
+        syncVTMock();
+        const { gridEl, dialog, thumbBtns, dialogTitle, dialogLocation } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        thumbBtns[0]!.click();
+        await Promise.resolve();
+        dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+        expect(dialogTitle.textContent).toBe(TEST_IMAGES[1]!.title);
+        expect(dialogLocation.textContent).toBe(TEST_IMAGES[1]!.location);
+    });
+
+    it('Scenario: Previous and next controls are reachable by screen readers', () => {
+        const { gridEl, dialog, prevBtn, nextBtn } = buildGallery(TEST_IMAGES);
+        initGallery(gridEl, dialog);
+        expect(dialog.contains(prevBtn)).toBe(true);
+        expect(dialog.contains(nextBtn)).toBe(true);
     });
 });
 

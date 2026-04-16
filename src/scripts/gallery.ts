@@ -110,8 +110,49 @@ export function initGallery(gridEl: HTMLElement, dialog: HTMLDialogElement): () 
         if (e.key === 'ArrowRight') navigate(1);
     }, { signal });
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    dialog.addEventListener('touchstart', (e: TouchEvent) => {
+        touchStartX = e.touches[0]!.clientX;
+        touchStartY = e.touches[0]!.clientY;
+    }, { signal, passive: true });
+
+    dialog.addEventListener('touchend', (e: TouchEvent) => {
+        const dx = e.changedTouches[0]!.clientX - touchStartX;
+        const dy = e.changedTouches[0]!.clientY - touchStartY;
+        if (Math.abs(dx) < 50 || Math.abs(dx) <= Math.abs(dy)) return;
+        navigate(dx > 0 ? -1 : 1);
+    }, { signal, passive: true });
+
     dialog.addEventListener('click', (e: MouseEvent) => {
         if (e.target === dialog) closeDialog();
+    }, { signal });
+
+    dialogImg.addEventListener('click', (e: MouseEvent) => {
+        const { naturalWidth, naturalHeight } = dialogImg;
+        if (!naturalWidth || !naturalHeight) {
+            closeDialog();
+            return;
+        }
+        const rect = dialogImg.getBoundingClientRect();
+        const naturalRatio = naturalWidth / naturalHeight;
+        const elemRatio = rect.width / rect.height;
+        let renderedW: number, renderedH: number;
+        if (naturalRatio > elemRatio) {
+            renderedW = rect.width;
+            renderedH = rect.width / naturalRatio;
+        } else {
+            renderedW = rect.height * naturalRatio;
+            renderedH = rect.height;
+        }
+        const ox = (rect.width - renderedW) / 2;
+        const oy = (rect.height - renderedH) / 2;
+        const cx = e.clientX - rect.left;
+        const cy = e.clientY - rect.top;
+        if (cx < ox || cx > ox + renderedW || cy < oy || cy > oy + renderedH) {
+            closeDialog();
+        }
     }, { signal });
 
     dialog.addEventListener('cancel', (e: Event) => {
