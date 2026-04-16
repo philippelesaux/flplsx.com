@@ -1,72 +1,4 @@
-## Purpose
-
-Clicking a portfolio thumbnail opens a full-screen native `<dialog>` with the full-size image, title, location, and prev/next navigation. Opens and closes with a View Transitions morph animation as progressive enhancement.
-
-## Requirements
-
-### Requirement: Thumbnail opens full-size image in a dialog
-Clicking or activating a portfolio thumbnail SHALL open a native `<dialog>` element displaying the display-size image (1400px webp), the image title, and the image location.
-
-#### Scenario: Thumbnail click opens dialog
-- **WHEN** a user clicks or activates a portfolio thumbnail
-- **THEN** the `<dialog>` SHALL open via `showModal()` displaying the corresponding full-size image, title, and location
-
-#### Scenario: Dialog is accessible via keyboard
-- **WHEN** a user tabs to a thumbnail button and presses Enter or Space
-- **THEN** the dialog SHALL open with focus moved inside the dialog
-
-### Requirement: Dialog displays the selected image immediately on open
-When the dialog is opened, the selected image SHALL be visible as soon as the opening animation completes. No previously viewed image SHALL appear at any point during the open sequence.
-
-#### Scenario: Second open shows new image immediately
-- **WHEN** a user opens the dialog for a second time by clicking a different thumbnail
-- **THEN** the dialog SHALL display the newly selected image with no visible flash of the previously viewed image
-
-### Requirement: Transitioning guard prevents concurrent close calls
-A guard SHALL prevent the close function from being called while a View Transition is already in progress. Once a close transition begins, any further close attempts — via Escape, close button, or backdrop — SHALL be ignored until the transition completes.
-
-#### Scenario: Second close attempt during transition is ignored
-- **WHEN** a close transition is already in progress
-- **THEN** any additional close attempt SHALL be a no-op until the transition finishes
-
-### Requirement: Dialog is dismissible
-The dialog SHALL be closeable via the native Escape key, a visible close button, and clicking the `::backdrop`.
-
-#### Scenario: Escape key closes dialog
-- **WHEN** the dialog is open and the user presses Escape
-- **THEN** the dialog SHALL close and focus SHALL return to the thumbnail that opened it
-
-#### Scenario: Close button closes dialog
-- **WHEN** the user clicks the close button inside the dialog
-- **THEN** the dialog SHALL close
-
-#### Scenario: Backdrop click closes dialog
-- **WHEN** the user clicks the dialog backdrop (the area outside the dialog content)
-- **THEN** the dialog SHALL close
-
-### Requirement: View Transitions morph animation on open and close
-Opening and closing the dialog SHALL animate with a View Transitions morph between the thumbnail and the full-size image, as progressive enhancement. All close paths — close button, backdrop click, and Escape key — SHALL route through the animated close function.
-
-#### Scenario: Open triggers morph from thumbnail to dialog image
-- **WHEN** a thumbnail is clicked
-- **THEN** `document.startViewTransition` SHALL be used to morph the thumbnail into the dialog image using a shared `view-transition-name`
-
-#### Scenario: Close triggers morph from dialog image to thumbnail
-- **WHEN** the dialog is closed via the close button or backdrop click
-- **THEN** `document.startViewTransition` SHALL morph the dialog image back to the thumbnail
-
-#### Scenario: Escape key close triggers morph animation
-- **WHEN** the user presses Escape while the dialog is open
-- **THEN** the `cancel` event SHALL be intercepted via `preventDefault()`
-- **THEN** the animated close function SHALL run, morphing the dialog image back to the thumbnail
-
-#### Scenario: View Transitions unavailable — dialog opens directly
-- **WHEN** `document.startViewTransition` is not available in the browser
-- **THEN** the dialog SHALL open and close via `showModal()` / `close()` directly, without animation
-
-#### Scenario: view-transition-name is cleared after each transition
-- **WHEN** a View Transition completes
-- **THEN** the `view-transition-name` style SHALL be removed from both the thumbnail button and the dialog image to prevent conflicts on subsequent transitions
+## MODIFIED Requirements
 
 ### Requirement: Dialog layout is full-screen on all viewports
 The dialog SHALL occupy the full viewport on both mobile and desktop, with the image centered and contained within the available space. A typographic strip below the image displays the title and location. A close button is visible in the top-right corner of the dialog.
@@ -90,6 +22,8 @@ The dialog SHALL occupy the full viewport on both mobile and desktop, with the i
 #### Scenario: Click on the rendered image does not close dialog
 - **WHEN** the user clicks directly on the rendered image content
 - **THEN** the dialog SHALL remain open
+
+## ADDED Requirements
 
 ### Requirement: Dialog background blurs the page content behind it
 When the dialog is open, the background area surrounding the contained image SHALL display a blurred view of the page content behind the dialog, rather than a plain black background.
@@ -145,3 +79,9 @@ The dialog SHALL provide navigation controls for screen reader users, and SHALL 
 #### Scenario: Navigation announces the new photo to screen readers
 - **WHEN** the user navigates to a different photo by any means
 - **THEN** the new photo's title and location SHALL be announced by the screen reader without requiring user action
+
+## REMOVED Requirements
+
+### Requirement: Prev/next navigation within dialog
+**Reason**: Removed to simplify the viewer — visible navigation buttons conflicted with the typographic, editorial aesthetic.
+**Migration**: Navigation between photos is available via ArrowLeft/ArrowRight keyboard keys and horizontal swipe gestures. Screen reader users can use the dedicated previous/next controls.
