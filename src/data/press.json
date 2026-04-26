@@ -1,0 +1,41 @@
+[
+    {
+        "id": "timeout-vagabond",
+        "publication": "Time Out",
+        "articleTitle": "The Vagabond Hotel",
+        "author": "Alisha Miranda",
+        "authorUrl": "https://www.alishainthe.biz/",
+        "url": "https://www.timeout.com/miami/hotels/the-vagabond-hotel",
+        "image": "./press/vagabond-hotel.webp",
+        "alt": "A pool-side bar in a tropical climate"
+    },
+    {
+        "id": "edible-philly-cider",
+        "publication": "Edible Philly Magazine",
+        "articleTitle": "Pennsylvania & The Finger Lakes",
+        "author": "Alisha Miranda",
+        "authorUrl": "https://www.alishainthe.biz/",
+        "url": "https://ediblephilly.ediblecommunities.com/drink/pennsylvania-the-finger-lakes/",
+        "image": "./press/finger-lakes.jpg",
+        "alt": "A hiking trail next to a creek with prime fall foliage"
+    },
+    {
+        "id": "grid-longwood",
+        "publication": "Grid Magazine",
+        "articleTitle": "Longwood Gardens Ornamental Kitchen Garden",
+        "author": "Alisha Miranda",
+        "authorUrl": "https://www.alishainthe.biz/",
+        "url": "https://gridphilly.com/blog-home/2026/04/04/longwood-gardens-ornamental-kitchen-garden-features-a-seed-to-table-dining-experience/",
+        "image": "./press/longwood-gardens.jpg",
+        "alt": "A colorful salad with edible flowers"
+    },
+    {
+        "id": "phillymag-bars",
+        "publication": "Philadelphia Magazine",
+        "articleTitle": "Great Bars & Pubs Neighborhood Guide",
+        "author": "Sandy Smith",
+        "url": "https://www.phillymag.com/news/great-bars-pubs-neighborhood-guide/",
+        "image": "./press/chestnut-hill.jpg",
+        "alt": "A flight of beer"
+    }
+]

@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import headshot from "../data/headshot.jpg";
+import Publications from "../components/Publications.astro";
 ---
 
 <BaseLayout title="About">
@@ -18,16 +19,7 @@ import headshot from "../data/headshot.jpg";
                 <h1>Philippe LeSaux</h1>
                 <p class="roles">Photographer · Software Engineer</p>
             </div>
-            <div class="credentials">
-                <h2 class="credentials-label">Featured in</h2>
-                <ul class="pub-list">
-                    <li><a href="https://www.timeout.com/miami/hotels/the-vagabond-hotel" target="_blank">Time Out</a></li>
-                    <li><a href="https://ediblephilly.ediblecommunities.com/drink/pennsylvania-the-finger-lakes/" target="_blank">Edible Philly Magazine</a></li>
-                    <li><a href="https://gridphilly.com/blog-home/2026/04/04/longwood-gardens-ornamental-kitchen-garden-features-a-seed-to-table-dining-experience/" target="_blank">Grid Magazine</a></li>
-                    <li><a href="https://www.phillymag.com/news/great-bars-pubs-neighborhood-guide/" target="_blank">Philadelphia Magazine</a></li>
-                </ul>
-            </div>
-            <p class="bio">I'm a digital artist, jumping mediums from photography to code to music. Specializing in food and travel photography, my work has been featured in Time Out, Edible Philly Magazine, Grid Magazine and Philadelphia Magazine, in both digital and physical media. I take too many pictures of my dog, Lenny.</p>
+            <p class="bio">I'm a digital artist, jumping mediums from photography to code to music. Specializing in food and travel photography, my work has been featured in national and regional publications, in both digital and physical media. I take too many pictures of my dog, Lenny.</p>
             <div class="contact" data-contact>
                 <h2 class="contact-label">Contact</h2>
                 <ul class="contact-list">
@@ -59,6 +51,7 @@ import headshot from "../data/headshot.jpg";
             </div>
         </div>
     </div>
+    <Publications />
 </BaseLayout>
 
 <script>
@@ -134,37 +127,6 @@ import headshot from "../data/headshot.jpg";
     .bio {
         color: var(--color-text);
         margin: 0;
-    }
-
-    .credentials-label {
-        font-size: var(--text-sm);
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: var(--tracking-wider);
-        color: var(--color-text-muted);
-        margin: 0 0 var(--space-2);
-    }
-
-    .pub-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-2);
-    }
-
-    .pub-list li {
-        display: flex;
-        align-items: center;
-        gap: var(--space-2);
-        color: var(--color-text-secondary);
-    }
-
-    .pub-icon {
-        display: inline-block;
-        width: 0;
-        height: 0;
     }
 
     .roles {

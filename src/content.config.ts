@@ -13,6 +13,21 @@ const portfolio = defineCollection({
     })
 });
 
+const press = defineCollection({
+    loader: file('src/data/press.json'),
+    schema: ({ image }) => z.object({
+        id: z.string(),
+        publication: z.string(),
+        articleTitle: z.string(),
+        author: z.string(),
+        authorUrl: z.string().optional(),
+        url: z.string(),
+        image: image(),
+        alt: z.string(),
+    })
+});
+
 export const collections = {
-    portfolio
+    portfolio,
+    press,
 };
