@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The about page introduces Philippe LeSaux with a headshot, role hierarchy, first-person bio, and publication credentials. It adapts between a single-column mobile layout and a two-column desktop layout, and integrates cleanly with the persistent navigation bar.
+The about page introduces Philippe LeSaux with a headshot, role hierarchy, first-person bio, and contact information. It adapts between a single-column mobile layout and a two-column desktop layout, and integrates cleanly with the persistent navigation bar.
 
 ---
 
@@ -57,30 +57,8 @@ The about page bio SHALL use first-person voice.
 
 ---
 
-### Requirement: Credentials section lists publication appearances
-The about page SHALL include a "Featured in" section listing Time Out, Edible, and Philly Mag as publications where the subject's photography has appeared.
-
-#### Scenario: All three publications are listed
-- **WHEN** a user views the credentials section
-- **THEN** Time Out, Edible, and Philly Mag SHALL all be listed
-
-#### Scenario: Credentials section has a label
-- **WHEN** a user views the credentials section
-- **THEN** a visible label "Featured in" SHALL precede the publication list
-
----
-
-### Requirement: Credentials section is structured to accept logo assets
-The credentials section markup SHALL include an icon slot per publication entry so that logo assets can be added in a future change without altering the list structure.
-
-#### Scenario: Icon slot is present but visually inert without an asset
-- **WHEN** no logo asset is provided for a publication
-- **THEN** the icon slot SHALL render without visible content and SHALL NOT affect layout
-
----
-
 ### Requirement: Mobile layout stacks content vertically in reading order
-On mobile viewports the about page SHALL display content in a single-column vertical stack: headshot first, followed by name, roles, credentials, and bio.
+On mobile viewports the about page SHALL display content in a single-column vertical stack: headshot first, followed by name, roles, bio, and contact.
 
 #### Scenario: Headshot appears first on mobile
 - **WHEN** a user views the about page on a mobile viewport
@@ -88,24 +66,24 @@ On mobile viewports the about page SHALL display content in a single-column vert
 
 #### Scenario: Roles appear directly after name on mobile
 - **WHEN** a user views the about page on a mobile viewport
-- **THEN** the roles line SHALL appear immediately below the name and above the credentials section
+- **THEN** the roles line SHALL appear immediately below the name
 
-#### Scenario: Credentials appear before bio on mobile
+#### Scenario: Bio follows roles on mobile
 - **WHEN** a user views the about page on a mobile viewport
-- **THEN** the credentials section SHALL appear above the bio paragraph
+- **THEN** the bio paragraph SHALL appear below the roles line
 
 ---
 
 ### Requirement: Desktop layout uses a two-column arrangement
-On viewports 768px and wider the about page SHALL display the headshot in a left column and the remaining content — name, roles, credentials, and bio — in a right column, in that order.
+On viewports 768px and wider the about page SHALL display the headshot in a left column and the remaining content — name, roles, bio, and contact — in a right column, in that order.
 
 #### Scenario: Two columns are visible on desktop
 - **WHEN** a user views the about page on a viewport of 768px or wider
-- **THEN** the headshot SHALL occupy a left column and name, roles, credentials, and bio SHALL occupy a right column beside it
+- **THEN** the headshot SHALL occupy a left column and name, roles, bio, and contact SHALL occupy a right column beside it
 
 #### Scenario: Name and roles lead the content column on desktop
 - **WHEN** a user views the about page on a viewport of 768px or wider
-- **THEN** the name SHALL appear at the top of the content column with the roles line immediately below it, above credentials
+- **THEN** the name SHALL appear at the top of the content column with the roles line immediately below it
 
 ---
 
